@@ -155,6 +155,10 @@ Classification models can be created with most Machine Learning Algorithms
 5. Attribute Inference for known members
 6. Model Inversion
 
+Mitigation 1:  *alignment* via human-in-the-loop-reinforcmeent-learning, 
+- used for commercial Large Language Model
+- but recent reportde[these can be broken](https://www.theguardian.com/technology/2024/apr/03/many-shot-jailbreaking-ai-artificial-intelligence-safety-features-bypass?CMP=Share_iOSApp_Other)
+
 <div style="height:10px;background:black;width:400"></div>
 
 ## Foundation models
