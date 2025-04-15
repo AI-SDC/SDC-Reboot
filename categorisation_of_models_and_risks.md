@@ -49,7 +49,10 @@ Deep Learning models are typically needed for the last three types of output.
 - Radial Basis Function Networks
 - k-Nearest Neighbours
 - Case-based reasoning
-- kernel models- alternative name given to a braod class which includes SVMs
+- kernel models- alternative name given to a broad class which includes SVMs
+- Self Organising Map (SOM),
+- Learning Vector Quantization (LVQ),
+- Locally Weighted Learning (LWL),
   
 ### Principle Risk: Model explicitly contains training data 
 The risk from this group of models occurs because they directly embed members of the training data in the model.
