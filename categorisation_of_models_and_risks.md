@@ -32,19 +32,27 @@ Deep Learning models are typically needed for the last three types of output.
 
 ## $${\text{\color{blue}Types\ of\ risk\ considered}}$$
 
-- Model *explicitly* encodes data
-- Small-group reporting ( which can enable Re-identification / Attribute Inference)
-- Class Disclosure
-- Membership Inference
-- Attribute Inference for known members
-- Model Inversion
-- Model can be triggered to regurgitate *implicitly* stored training data
+- Model *explicitly* encodes data\
+  *brief description*
+- Small-group reporting ( which can enable Re-identification / Attribute Inference)\
+  *brief description*
+- Class Disclosure\
+  *brief description*
+- Membership Inference\
+  *brief description*
+- Attribute Inference for known members\
+  *brief description*
+- Model Inversion\
+  *brief description*
+- Model can be triggered to regurgitate *implicitly* stored training data\
+  *brief description*
 
 <div style="height:10px;background:black;width:400"></div>
 
-## $${\text{\color{blue}Group\ 1:\ Instance-Based\ Learning.}}$$
-
-### Examples of Instance-Based Learning
+## $${\text{\color{blue}Group\ 1:\ Instance-Based\ Models.}}$$
+These models are created by a group of algorithms that make predictions based on distances to explicitly included training records.
+The best knowm example is 1-Nearest Neighbour which effectively says *"What's the closest thing I've seen already?"*
+### Examples of Instance-Based Models
 - Support Vector Machines (SVMs) for example Support Vector Classifiers and Support Vector Regressors.
 - Radial Basis Function Networks
 - k-Nearest Neighbours
@@ -130,7 +138,7 @@ Classification models can be created with most Machine Learning Algorithms
 <div style="height:10px;background:black;width:400"></div>
 
 ## $${\text{\color{blue}Group\ 4:\ Models\ producing\ semi-structured\ outputs}}$$
-
+*brief description to follow*
 ### Examples
 - Vision-based  models that automatically segment "regions of interest" in an image.
   
@@ -144,7 +152,7 @@ Classification models can be created with most Machine Learning Algorithms
 <div style="height:10px;background:black;width:400"></div>
 
 ## $${\text{\color{blue}Group5:\ Models\ producing\ unstructured\ outputs (e.g.\ Natural\ Language).}}$$
-
+*brief description to follow*
 ### Examples
 - Models that  produce summaries of inputs (could be text or images)
 - Chatbots
@@ -165,3 +173,5 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 <div style="height:10px;background:black;width:400"></div>
 
 ## $${\text{\color{blue}Group6:\ Foundation\ models}}$$
+
+  *brief description to follow*
