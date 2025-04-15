@@ -1,6 +1,6 @@
 # Documentation of the types of risk and possible mitigations associated with different types of machine learning models
 
-Initial Authors: Jim Smith, Alba Crespi-Boixander 2025
+Initial Authors: Jim Smith, Alba Crespi Boixader 2025
 ### V0.1: April 2025
 
 <div style="height:10px;background:black;width:400"></div>
