@@ -84,14 +84,14 @@ Examples from different domains include: air pollutant levels, risk of re-offend
 In general the risks for this group are the same as for well understood Linear/Logistic/Logit Regression.
 
 ### Examples of Regression Models
-Regression models can be created with most Machine Learning Algorithms, as well as statistical techniques such as the *ARIMA* family of models.   
+Regression models can be created with most Machine Learning Algorithms, as well as many different statistical techniques such as the *ARIMA* family of models.   
 
 
 
 ### Principal risk: *Small Group Reporting*:
-- the model should not be specified so completely that  nay partof it described a small group of records
-- typically this means stipulating a lower limit on the *residual degress of freedom*
-   number_of_records - number_of_trainable_parameters_in_the_model
+- the model should not be specified so completely that  any part of it describes a small group of records
+- typically this means stipulating a lower limit on the *residual degrees of freedom* :  
+  ```DoF =  number_of_records - number_of_trainable_parameters_in_the_model```
 
 Some models may implicitly or explicitly perform *piece-wise regression* in  which case each sub-group should be checked for size.
 
