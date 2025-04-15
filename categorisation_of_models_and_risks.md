@@ -5,7 +5,7 @@ Initial Authors: Jim Smith, Alba Crespi Boixader 2025
 
 <div style="height:10px;background:black;width:400"></div>
 
-## Description
+## $${\text{\color{blue}Purpose \ of\ document}}$$
 The document aims to capture the types of privacy risk and mitigations associated with different forms of Machine Learning.
 
 It is a counter-part to the [statbarns taxonomy](https://doi.org/10.1007%2F978-3-031-69651-0_19) for 'traditional analytic outputs from TREs.
@@ -30,7 +30,7 @@ Deep Learning models are typically needed for the last three types of output.
 
 <div style="height:10px;background:black;width:400"></div>
 
-## Types of risk considered
+## $${\text{\color{blue}Types\ of\ risk\ considered}}$$
 
 - Model *explicitly* encodes data
 - Small-group reporting ( which can enable Re-identification / Attribute Inference)
@@ -42,7 +42,7 @@ Deep Learning models are typically needed for the last three types of output.
 
 <div style="height:10px;background:black;width:400"></div>
 
-## Group 1: Instance-Based Learning.
+## $${\text{\color{blue}Group\ 1:\ Instance-Based\ Learning.}}$$
 
 ### Examples of Instance-Based Learning
 - Support Vector Machines (SVMs) for example Support Vector Classifiers and Support Vector Regressors.
@@ -77,7 +77,7 @@ All  risks below apply and should also be checked for - although the primary mit
 
 <div style="height:10px;background:black;width:400"></div>
 
-## Group 2: Regression Models
+## $${\text{\color{blue}Group\ 2:\ Regression\ Models}}$$
 These are models that have been trained to make a numerical prediction - in which we do not include probability of some event or class occurring.  
 Examples from different domains include: air pollutant levels, risk of re-offending, duration of hospital stay, etc.
 
@@ -113,7 +113,7 @@ Some models may implicitly or explicitly perform *piece-wise regression* in  whi
 
 <div style="height:10px;background:black;width:400"></div>
 
-## Group 3: Classification Models
+## $${\text{\color{blue}Group\ 3:\ Classification\ Models}}$$
 These models  are designed to predict the probability that a record is associated with different output classes.
 This could be a single value *P(voting in next election)* or the likelihoods associated with a finite set of classes e.g. *P(votes for party X)* or linking genetic/health records to different disease diagnoses.
 
@@ -129,10 +129,10 @@ Classification models can be created with most Machine Learning Algorithms
 
 <div style="height:10px;background:black;width:400"></div>
 
-## Models producing semi-structured outputs
+## $${\text{\color{blue}Group\ 4:\ Models\ producing\ semi-structured\ outputs}}$$
 
 ### Examples
-- Vision-based  models that autoamtically segment "regions of interest" in an image.
+- Vision-based  models that automatically segment "regions of interest" in an image.
   
 ### Risks  and Mitigations
 1. Small-group reporting ( which can enable Re-identification / Attribute Inference)
@@ -143,7 +143,7 @@ Classification models can be created with most Machine Learning Algorithms
 
 <div style="height:10px;background:black;width:400"></div>
 
-## Models producing unstructured outputs (e.g. Natural Language).
+## $${\text{\color{blue}Group5:\ Models\ producing\ unstructured\ outputs (e.g.\ Natural\ Language).}}$$
 
 ### Examples
 - Models that  produce summaries of inputs (could be text or images)
@@ -164,4 +164,4 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 <div style="height:10px;background:black;width:400"></div>
 
-## Foundation models
+## $${\text{\color{blue}Group6:\ Foundation\ models}}$$
