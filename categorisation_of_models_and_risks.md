@@ -54,13 +54,13 @@ These models are created by a group of algorithms that make predictions based on
 The best knowm example is 1-Nearest Neighbour which effectively says *"What's the closest thing I've seen already?"*
 ### Examples of Instance-Based Models
 - Support Vector Machines (SVMs) for example Support Vector Classifiers and Support Vector Regressors.
-- Radial Basis Function Networks
-- k-Nearest Neighbours
-- Case-based reasoning
-- kernel models- alternative name given to a broad class which includes SVMs
-- Self Organising Map (SOM),
-- Learning Vector Quantization (LVQ),
-- Locally Weighted Learning (LWL),
+- Radial Basis Function Networks.
+- k-Nearest Neighbours.
+- Case-based reasoning.
+- kernel models- alternative name given to a broad class which includes SVMs.
+- Self Organising Map (SOM).
+- Learning Vector Quantization (LVQ).
+- Locally Weighted Learning (LWL).
   
 ### Principle Risk: Model explicitly contains training data 
 The risk from this group of models occurs because they directly embed members of the training data in the model.
@@ -174,4 +174,38 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 ## $${\text{\color{blue}Group6:\ Foundation\ models}}$$
 
-  *brief description to follow*
+  These type of models are pre-trained on vast amounts of general data, and then are fine-tuned, adapted or carefully engineered for specific applications. They are adaptable and proving, in many cases, more efficient than a single model for the use-case.
+
+  With only a few foundation models, trained on a very limited number of datasets, the applications are vast. However, it poses a monopolistic power structure problem.
+
+  They are based on deep neural networks and transfer learning. Which are well stablish method in the AI world. The main difference lie on being trained on extreme large amounts of data. Therefore the ability to be transferred across domains.
+
+### Examples
+Some examples of foundational models are:
+- Open AI's GPT-Series
+- BERT
+- CLIP
+- OpenLLaMa
+
+The application specific fine-tuned models are mostly in the field of natural language processing (NLP), and well known examples include:
+- ChatGPT
+- DeepSeek
+- Grok
+- DALL-E
+
+### Risks and mitigations
+
+1. It is hard to understand and explain the behaviour.
+2. Uncertainty on the capabilities.
+3. Unclear the data which had been pre-trained on. Including, dataset bias, copyright and license.
+
+Mitigation 1: Be cautious and aware of potential "unsettling" behaviour.
+
+Mitigation 2: Foundation models can be *homogenised* by a few foundational models, train on a few datasets and/or a few organisations. However, the elevated costs of training such models means in practice, most people or organisations can't do it, exacerbating the monopoly of a few companies which own the large datasets.
+
+Mitigation 3: Without a clear definition of the characteristics of the data it is hard to know which biases there might be. This can be fine-tuned by observations. 
+For TREs or equivalent and developers, need to make sure they can host the pre trained model and data, and ensure which limitations, if any, there are for the derived model.
+
+
+### References
+Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221–231 (2024). https://doi.org/10.1007/s12599-024-00851-0
