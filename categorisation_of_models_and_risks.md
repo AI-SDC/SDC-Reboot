@@ -3,6 +3,62 @@
 Initial Authors: Jim Smith, Alba Crespi Boixader 2025
 ### V0.1: April 2025
 
+Machine learning can be classified in several different ways depending on the properties to emphasise. Below there is a general basic diagram:
+
+```mermaid
+---
+config:
+  theme: redux-color
+---
+mindmap
+  root((Machine Learning))
+    By type of Learning
+    ::icon(fa fa-book)
+      Lazy learning or<br/> instance-based
+      Eager learners
+
+    Type of classification
+    ::icon(fas fa-sort-amount-down)  
+      Supervised
+        Regression
+        Classification
+            Structured
+            Unstructured
+      Unsupervised
+        Clustering
+        Association
+      Semi Supervised Learning
+    
+    Tasks
+    ::icon(fas fa-tasks)
+      Binary classification
+      Multi-class classification
+      Multi-label classification
+      Imbalanced classification
+
+    Type of feedback
+    ::icon(fas fa-shapes)
+      Reinforcement Learning
+      Transfer Learning
+      Ensemble methods
+      Foundation models
+    
+    Modern models
+    ::icon(fas fa-brain)
+      Artificial Neural Networks
+        Foundation Models
+      Transformers
+      Generative AI
+      Reinforcement models
+    
+    Others
+    ::icon(fas fa-tags)
+      Natural Language processing
+      Speech
+      Vision
+      Robotics
+```
+
 <div style="height:10px;background:black;width:400"></div>
 
 ## $${\text{\color{blue}Purpose \ of\ document}}$$
