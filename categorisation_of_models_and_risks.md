@@ -174,70 +174,54 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 ## $${\text{\color{blue}Group6:\ Foundation\ models}}$$
 
-### TODO merge below - see note
+These type of models are pre-trained on vast amounts of general data from a given domain (often unlabelled, almost always sequence-structured), and then are fine-tuned, adapted or carefully engineered for specific applications. They are adaptable and proving, in many cases, more efficient than a single model for the use-case. With only a few foundation models, trained on a very limited number of datasets, the applications are vast. However, it poses a monopolistic power structure problem.
 
-  These type of models are pre-trained on vast amounts of general data, and then are fine-tuned, adapted or carefully engineered for specific applications. They are adaptable and proving, in many cases, more efficient than a single model for the use-case.
-
-  With only a few foundation models, trained on a very limited number of datasets, the applications are vast. However, it poses a monopolistic power structure problem.
+The goal is learn a useful 'embedding' (effectively a preprocessing that maps high-dimensional data onto  to a smaller set of features) that captures all of the important information within a sequence. This embedding forms the bridge between the *encoder* (learned preprocessing) and the *decoder* which transforms the encoded inputs back into a form suitable for a task.
 
   They are based on deep neural networks and transfer learning. Which are well stablish method in the AI world. The main difference lie on being trained on extreme large amounts of data. Therefore the ability to be transferred across domains.
 
 ### Examples
 Some examples of foundational models are:
-- Open AI's GPT-Series
-- BERT
-- CLIP
-- OpenLLaMa
+- Large Language Models:
+  - Open AI's GPT-Series
+  - OpenLLaMa
+  - BERT
+- Vision models:
+  - CLIP
+  
 
 The application specific fine-tuned models are mostly in the field of natural language processing (NLP), and well known examples include:
 - ChatGPT
 - DeepSeek
+- Gemini
 - Grok
 - DALL-E
-
-### Risks and mitigations
-
-1. It is hard to understand and explain the behaviour.
-2. Uncertainty on the capabilities.
-3. Unclear the data which had been pre-trained on. Including, dataset bias, copyright and license.
-
-Mitigation 1: Be cautious and aware of potential "unsettling" behaviour.
-
-Mitigation 2: Foundation models can be *homogenised* by a few foundational models, train on a few datasets and/or a few organisations. However, the elevated costs of training such models means in practice, most people or organisations can't do it, exacerbating the monopoly of a few companies which own the large datasets.
-
-Mitigation 3: Without a clear definition of the characteristics of the data it is hard to know which biases there might be. This can be fine-tuned by observations. 
-For TREs or equivalent and developers, need to make sure they can host the pre trained model and data, and ensure which limitations, if any, there are for the derived model.
-
-### Below written by JS while on train and nees ot be merged into the above
-Broadly speaking these are a class of models that are trained on lots of (often unlabelled, almost always sequence-structured) data from a given domain. The goal is learn a useful `embedding' (effectively a preprocessing that maps high-dimensional data onto  to a smaller set of features) that captures all of the important information within a sequence and can be easily adapted to specific tasks. This embedding forms the bridge between the *encoder* (learned preprocessing) and the *decoder* which transforms the encoded inputs back into a form suitable for a task.
-
-### Examples:
-- Large Langiuage Models (Chat-GPT, Gemini etc.)
-- Vision models (8DALL-E, Stable Diffusion etc.)
 ### Considerations  at project inception
-Typically foundation models   are `pre-trained'  using a decoder that attempts to solve a task that does not require manually labelled data, and so can use huge datasets from the internet e.g.:
+Typically foundation models are 'pre-trained' using a decoder that attempts to solve a task that does not require manually labelled data, and so can use huge datasets from the internet e.g.:
 - predict the next token in a sequence for *large language models* (Chat-GPT etc.)
 - removing randomly added 'noise' from an image   for *vision-based transformers* (Dall-E etc.)
 
-Subsequently they can be retrained for a specific tasks using smaller amounts of unlabelled data.
-Often this is done by only removing the 'head" (the final layer(s) of the *decoder*)  and replacing it with one suited to the new task (e.g. *N* output nodes for a classification problem with *N* different labels)
+Subsequently they can be retrained for a specific tasks using smaller amounts of unlabelled data. Often this is done by only removing the 'head" (the final layer(s) of the *decoder*)  and replacing it with one suited to the new task (e.g. *N* output nodes for a classification problem with *N* different labels)
 
 When a project wants to use a foundation model it is vital from project inception to  be clear whether researchers want to:
-1. Import a pre-trained model, then put a new  `head' on it and train that for a new project **without affecting the rest of the foundation model**.
+- Scenario 1. Import a pre-trained model, then put a new 'head' on it and train that for a new project **without affecting the rest of the foundation model**.
    - In this case they may not even need to export most of the model- just the prediction head. Therefore the 'head' can be treated as a simple regression or classification model (Groups 2 or 3).
    -  It would be reasonable to ask the researcher to separate their code into callable functions that do preprocessing (i.e. the unchanged 'body' of the foundation model) and prediction ('head'). This would allow  the TRE can run the various mitigation tests described above.
    -  If the head is simply a single output layer, then this is effectively  a linear or logistic regression model and can be evaluated as such.
-2.  Import a pre-trained model, put a new head on it, then adapt the head **and the 'body' of foundation model weights**.
+- Scenario 2. Import a pre-trained model, put a new head on it, then adapt the head **and the 'body' of foundation model weights**.
    - In this case potentially both the head and the body could be memorising trainign data and so need assessing
-4.  Train a foundation model from scratch and then export it.
+- Scenario 3. Train a foundation model from scratch and then export it.
 
-### Risks
+
+### Risks and mitigations
+Often, it is unclear the data which the foundation model had been pre-trained on. Including, dataset bias, copyright and license. TREs must ensure it can be hosted. Note that, as they are based on deep neural networks is highly likely it may contain data inside the pre-trained model.
+
 In both these last two cases the full model needs to be evaluated for risks including:
-- Model *explicitly* encodes data
-- Small-group reporting ( which can enable Re-identification / Attribute Inference)
-- Class Disclosure
-- Attribute Inference for known members.
--  Membership Inference.
+- Risk 1. Model *explicitly* encodes data
+- Risk 2. Small-group reporting (which can enable Re-identification / Attribute Inference)
+- Risk 3. Class Disclosure
+- Risk 4. Attribute Inference for known members.
+- Risk 5. Membership Inference.
 
 The first four risks  can be usually be measured without retraining the model, which may be plausible.
 
@@ -246,11 +230,11 @@ Whether this is plausible will depend entirely on the run-time it took to train 
 - it  **may** be possible for scenario 2, depending on the size of the training data and however many `epochs' (iterations) of training were used.
 - is **highly unlikely** to be feasible for scenario 3 (training a foundation model from scratch).
 
-### Mitigations:
-- Senario 1: As per groups 2 and 3.
-- Case 2: **possibly using a `Differentially Private Optimiser` for retraining.
-  In this case it would be necessary to justify whether Class Disclosure is not relevant to the dataset.
-- Case 2 and 3: Arguments that claim the fixed or learned preprocessing effrectively k-anonymises the data.
 
 ### References
 Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221–231 (2024). https://doi.org/10.1007/s12599-024-00851-0
+
+
+## $${\text{\color{blue}Summary table}}$$
+
+|Model    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Computational cost
