@@ -8,16 +8,16 @@ Machine learning can be classified in several different ways depending on the pr
 ```mermaid
 ---
 config:
-  theme: redux-color
+  theme: classic
 ---
 mindmap
   root((Machine Learning))
-    By type of Learning
+    By type of memorisation
     ::icon(fa fa-book)
       Lazy learning or<br/> instance-based
       Eager learners
 
-    Type of classification
+    Type of learning
     ::icon(fas fa-sort-amount-down)  
       Supervised
         Regression
@@ -36,7 +36,7 @@ mindmap
       Multi-label classification
       Imbalanced classification
 
-    Type of feedback
+    Ensemble methods
     ::icon(fas fa-shapes)
       Reinforcement Learning
       Transfer Learning
@@ -88,24 +88,34 @@ Deep Learning models are typically needed for the last three types of output.
 
 ## $${\text{\color{blue}Types\ of\ risk\ considered}}$$
 
-- Model *explicitly* encodes data\
+- Model *explicitly* encodes data:\
+  Some models work on the basis on having as part of the model a carefully selected amount of records included to be able to make predictions. In fact this is how the so called "Lazy learners" or "instance-based" models work.
+  Other type of larger models like deep learning, it is possible to retrieve information about the training data under certain circumstances.
+- Small-group reporting ( which can enable Re-identification / Attribute Inference):\
   *brief description*
-- Small-group reporting ( which can enable Re-identification / Attribute Inference)\
+- Class Disclosure:\
   *brief description*
-- Class Disclosure\
-  *brief description*
-- Membership Inference\
-  *brief description*
-- Attribute Inference for known members\
-  *brief description*
-- Model Inversion\
-  *brief description*
+- Privacy or Reconstruction attacks:\
+  Recreate one or more record from the data used to train the ML model, either partially or fully.
+  - Membership Inference (MI):\
+    The objective of this type of attack is to determine whether a specific record or data belonging to a person was part of the dataset used to train the machine learning.
+  - Attribute Inference for known members:\
+    For this type of attack, some information of a record belonging to a person is known and consists of finding out the rest of items of the record. Some information belonging to some people, e.g. famous, can be publicly available.
+  - Model Inversion:\
+    The goal is to recover a subset or group of records that have something in common (belong a specific sub-class), that is disclosing records belonging to several people at a time. For example, all the people who suffer from a specific rare disease used in the training data.
+  ### NEED TO THINK IF EXPAND RISKS INCLUDED
+  - *Property Inference:*\
+    *Ability to extract properties about the training data that not directly included in the ML model, and that the model unintentionally learned. For example, a NN performing gender classification but can be used to find out people who wears glasses.*
+  - Linkage attack\
+  - Intersection attacks\
+  - Evasion attacks\
+  - Poisoning attacks\
 - Model can be triggered to regurgitate *implicitly* stored training data\
   *brief description*
 
 <div style="height:10px;background:black;width:400"></div>
 
-## $${\text{\color{blue}Group\ 1:\ Instance-Based\ Models.}}$$
+## $${\text{\color{blue}Group\ 1:\ Lazy Learners or Instance-Based\ Models.}}$$
 These models are created by a group of algorithms that make predictions based on distances to explicitly included training records.
 The best knowm example is 1-Nearest Neighbour which effectively says *"What's the closest thing I've seen already?"*
 ### Examples of Instance-Based Models
@@ -290,7 +300,15 @@ Whether this is plausible will depend entirely on the run-time it took to train 
 ### References
 Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221–231 (2024). https://doi.org/10.1007/s12599-024-00851-0
 
+https://dl.acm.org/doi/full/10.1145/3624010
 
 ## $${\text{\color{blue}Summary table}}$$
 
-|Model    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Computational cost
+|Model type    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Computational cost|
+|---|---|---|---|---|---|---|---|
+|Lazy learners|&#x2714;|&#x2714;|&#x2714;|&#x2718;|&#x2714;|&#x2718;|&#x2191;|
+|Regression models|&#x2718;|&#x2714;|&#x2714;|&#x2718;|&#x2718;|&#x2718;|&#x2191;&#x2191;|
+|Classification|&#x2718;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2191;&#x2191;|
+|Models producing semi-structured outputs|&#10067;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2191;&#x2191;&#x2191;|
+|Models producing unstructured outputs|&#10067;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2191;&#x2191;&#x2191;|
+|Foundation models|&#10067;|&#10067;|&#10067;|&#x2714;|&#x2714;|&#x2714;|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
