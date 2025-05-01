@@ -28,6 +28,7 @@ mindmap
         Clustering
         Association
       Semi Supervised Learning
+      Reinforcement learning
     
     Tasks
     ::icon(fas fa-tasks)
@@ -38,7 +39,6 @@ mindmap
 
     Ensemble methods
     ::icon(fas fa-shapes)
-      Reinforcement Learning
       Transfer Learning
       Ensemble methods
       Foundation models
@@ -303,12 +303,19 @@ Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221�
 https://dl.acm.org/doi/full/10.1145/3624010
 
 ## $${\text{\color{blue}Summary table}}$$
+Risks
+|Model type    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Linkage attack | Computational cost|
+|---|---|---|---|---|---|---|---|--|
+|Lazy learners|🔴|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;|
+|Regression models|🟢|🔴|🟡|🔴|🔴|🔴|🔴|&#x2191;&#x2191;|
+|Classification|🟢|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;|
+|Models producing semi-structured outputs|🟢|🔴|🔴|🔴|🟡|🔴|🔴|&#x2191;&#x2191;&#x2191;|
+|Models producing unstructured outputs|🟡|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;|
+|Foundation models|🔴|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
 
-|Model type    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Computational cost|
-|---|---|---|---|---|---|---|---|
-|Lazy learners|&#x2714;|&#x2714;|&#x2714;|&#x2718;|&#x2714;|&#x2718;|&#x2191;|
-|Regression models|&#x2718;|&#x2714;|&#x2714;|&#x2718;|&#x2718;|&#x2718;|&#x2191;&#x2191;|
-|Classification|&#x2718;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2191;&#x2191;|
-|Models producing semi-structured outputs|&#10067;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2191;&#x2191;&#x2191;|
-|Models producing unstructured outputs|&#10067;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2714;|&#x2191;&#x2191;&#x2191;|
-|Foundation models|&#10067;|&#10067;|&#10067;|&#x2714;|&#x2714;|&#x2714;|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+Legend: 
+🟢Low risk
+🟡Medium Risk
+🔴High Risk
+❓Unknown
+
