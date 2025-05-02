@@ -8,7 +8,7 @@ Machine learning can be classified in several different ways depending on the pr
 ```mermaid
 ---
 config:
-  theme: classic
+  theme: neutral
 ---
 mindmap
   root((Machine Learning))
@@ -303,8 +303,8 @@ Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221�
 https://dl.acm.org/doi/full/10.1145/3624010
 
 ## $${\text{\color{blue}Summary table}}$$
-Risks
-|Model type    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Linkage attack | Computational cost|
+### Risks
+|Model type    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Property inference | Linkage attack | Computational cost|
 |---|---|---|---|---|---|---|---|--|
 |Lazy learners|🔴|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;|
 |Regression models|🟢|🔴|🟡|🔴|🔴|🔴|🔴|&#x2191;&#x2191;|
@@ -318,4 +318,18 @@ Legend:
 🟡Medium Risk
 🔴High Risk
 ❓Unknown
+
+### Mitigations
+The following table has a list of mitigations measures and to which risk they can protect against.
+|Mitigation    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Linkage attack |
+|---|---|---|---|---|---|---|---|
+|Differentially private methods||||||||
+|Use synthetic data instead||||||||
+|Dataset anonymisation||||||||
+|Data grouping||||||||
+|Predictions return minimal information (e.g. Yes/No)||||||||
+|||||||||
+|||||||||
+|||||||||
+|||||||||
 
