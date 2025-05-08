@@ -29,6 +29,7 @@ mindmap
         Association
       Semi Supervised Learning
       Reinforcement learning
+      Generative and Discriminative Learning
     
     Tasks
     ::icon(fas fa-tasks)
@@ -50,6 +51,12 @@ mindmap
       Transformers
       Generative AI
       Reinforcement models
+    
+    Learning Architectures
+    ::icon("fa-light fa-hexagon-nodes")
+      Centralised learning
+      Distributed Learning
+      
     
     Others
     ::icon(fas fa-tags)
@@ -94,7 +101,7 @@ Deep Learning models are typically needed for the last three types of output.
 - Small-group reporting ( which can enable Re-identification / Attribute Inference):\
   *brief description*
 - Class Disclosure:\
-  *brief description*
+  It occurs when information of a distinct population group is reveled, often inadvertently. For instance, when either none or all of the observations in a given category come from that subpopulation.
 - Privacy or Reconstruction attacks:\
   Recreate one or more record from the data used to train the ML model, either partially or fully.
   - Membership Inference (MI):\
@@ -102,7 +109,7 @@ Deep Learning models are typically needed for the last three types of output.
   - Attribute Inference for known members:\
     For this type of attack, some information of a record belonging to a person is known and consists of finding out the rest of items of the record. Some information belonging to some people, e.g. famous, can be publicly available.
   - Model Inversion:\
-    The goal is to recover a subset or group of records that have something in common (belong a specific sub-class), that is disclosing records belonging to several people at a time. For example, all the people who suffer from a specific rare disease used in the training data.
+    The goal is to recover a subset or group of records that have something in common (belong a specific sub-class), that is disclosing records belonging to several people at a time. For example, all the people who suffer from a distinct rare disease used in the training data.
   ### NEED TO THINK IF EXPAND RISKS INCLUDED
   - *Property Inference:*\
     *Ability to extract properties about the training data that not directly included in the ML model, and that the model unintentionally learned. For example, a NN performing gender classification but can be used to find out people who wears glasses.*
@@ -116,7 +123,8 @@ Deep Learning models are typically needed for the last three types of output.
 <div style="height:10px;background:black;width:400"></div>
 
 ## $${\text{\color{blue}Group\ 1:\ Lazy Learners or Instance-Based\ Models.}}$$
-These models are created by a group of algorithms that make predictions based on distances to explicitly included training records.
+This type of algorithms are simple and easy to implement and still widely adopted. They classify or make predictions based on proximity to a group data points known as nearest neighbors (NN). The so called NN are data points are explicitly included or embedded within the model during the training phase. They are essential for them to work.
+
 The best knowm example is 1-Nearest Neighbour which effectively says *"What's the closest thing I've seen already?"*
 ### Examples of Instance-Based Models
 - Support Vector Machines (SVMs) for example Support Vector Classifiers and Support Vector Regressors.
@@ -306,19 +314,34 @@ https://dl.acm.org/doi/full/10.1145/3624010
 ### Risks
 |Model type    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Property inference | Linkage attack | Computational cost|
 |---|---|---|---|---|---|---|---|--|
-|Lazy learners|🔴|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;|
+|Lazy learners|🔴🟥❌|🔴🟥✔|🔴|🔴|🔴|🔴|🔴|&#x2191;|
 |Regression models|🟢|🔴|🟡|🔴|🔴|🔴|🔴|&#x2191;&#x2191;|
 |Classification|🟢|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;|
 |Models producing semi-structured outputs|🟢|🔴|🔴|🔴|🟡|🔴|🔴|&#x2191;&#x2191;&#x2191;|
 |Models producing unstructured outputs|🟡|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;|
-|Foundation models|🔴|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+|Foundation models|🔴🔺🟥|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
 
 Legend: 
-🟢Low risk
-🟡Medium Risk
-🔴High Risk
+Event likelihood
+🟢 Low or very low
+🟡 Medium 
+🔴 High 
+
+Severity/Consequences/Impact
+🟩 Low
+🟨 Medium
+🟥 Catastrophic
+
+Mitigation measures
+❌ Not possible
+✔  Possible
+
 ❓Unknown
 
+Risk classification:
+- How likely is the event/specific type of risk to happen.
+- The impact it has. For example, for disclosure control could be something such as exposing 1 or 2 records versus exposing all/almost all records.
+- How easy would it be to apply a successful mitigation strategy? - sometimes it might be possible, but it might impact the output negatively. So it has the be a balance between technically possible and achievable in practice?
 ### Mitigations
 The following table has a list of mitigations measures and to which risk they can protect against.
 |Mitigation    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Linkage attack |
