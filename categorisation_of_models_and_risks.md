@@ -1,14 +1,13 @@
 # Documentation of the types of risk and possible mitigations associated with different types of machine learning models
 
 > ℹ️ 
->Initial Authors: Jim Smith, Alba Crespi Boixader 2025
+> $$\textcolor{gray}{Initial\ Authors: Jim\ Smith,\ Alba\ Crespi\ Boixader\ 2025}$$
 >
-> ### V0.2: May 2025
+> ### $$\textcolor{gray}{V0.2: May\ 2025}$$
 
-<div style="height:10px;background:black;width:400"></div>
+<!--<div style="height:10px;background:black;width:400"></div>-->
 
 ## Introduction
-<!-- ## $${\text{\color{blue}Purpose \ of\ document}}$$ -->
 
 Trusted Research Environments (TREs) are experiencing an increased demand on project using AI and ML. There is a need to clearly identify which risks, in terms of data privacy, TREs would face depending on the type of technique the user or researcher employs. Risks can be minimised and avoided in most cases, although cannot always be completely eliminated.
 
@@ -20,7 +19,7 @@ Previous work on GRAIMatter project[1], SACRO[2] and SDC-Reboot Community Intere
 
 ### Purpose
 
-This document aims to capture the types of privacy risk and mitigations associated with different forms of Machine Learning.  It is a counter-part to the [statbarns taxonomy][https://doi.org/10.1007%2F978-3-031-69651-0_19][3] for 'traditional analytic outputs from TREs. That consolidated 20+ years of theory by grouping analyses into types such as ‘frequencies, distribution shapes measures etc. With associated sets of risk and mitigations.
+This document aims to capture the types of privacy risk and mitigations associated with different forms of Machine Learning.  It is a counter-part to the [statbarns taxonomy](https://doi.org/10.1007%2F978-3-031-69651-0_19)[3] for 'traditional analytic outputs from TREs. That consolidated 20+ years of theory by grouping analyses into types such as ‘frequencies, distribution shapes measures etc. With associated sets of risk and mitigations.
 
 The objective is to produce a taxonomy of risks with their corresponding mitigation strategies. When a TRE is faced with a new ML project proposal, where the model will be egressed, there are a small number of options to consider. TREs should have in place risks assessments and mitigations flows accordingly.
 
@@ -31,7 +30,7 @@ The objective is to produce a taxonomy of risks with their corresponding mitigat
 Machine learning models are classified according to the outputs produced. When thinking to use it to evaluate an ML project, researchers need to provide sufficient detail of how the ML model is created for TRE staff to understand which category to look into. Therefore the right set of mitigation strategies can be applied where and when needed.
 
 > [!IMPORTANT]
-> Note that when there is no egress of the model from the TRE, there is no risk of privacy leakage from the model. Therefore this guide does not apply.
+> *Note that when there is no egress of the model from the TRE, there is no risk of privacy leakage from the model. Therefore this guide does not apply.*
 
 According to our classification, you need to decide which case applies to the specific project to be evaluated. For each type of models, there are examples of specific algorithms that can produce them. After a brief description, the risks are listed followed by another subsection of mitigation strategies for each risk identified.
 
@@ -71,10 +70,10 @@ In the second category, where models do not embed data, techniques are grouped d
 - unstructured outputs (e.g free text responses)
 
 > [!NOTE]
-> It is important to note that almost all Machine Learning Algorithms can be trained to create classification or regression models.
+> *It is important to note that almost all Machine Learning Algorithms can be trained to create classification or regression models.*
 
 > [!NOTE]
->Deep Learning models are typically needed for models that produce semi-structured, unstructured outputs as well as models which are based on pre-processed embedding input data.  
+> *Deep Learning models are typically needed for models that produce semi-structured, unstructured outputs as well as models which are based on pre-processed embedding input data.* 
 
 <!--<div style="height:10px;background:black;width:400"></div>-->
 
@@ -100,7 +99,7 @@ In the second category, where models do not embed data, techniques are grouped d
 
 
 > [!NOTE]
-> The input data is the data after pre-processing that is used to train the model. It is not necessarily the raw data provided by the TRE to the user or researcher.
+> *The input data is the data after pre-processing that is used to train the model. It is not necessarily the raw data provided by the TRE to the user or researcher.*
 
   #### NEED TO THINK IF EXPAND RISKS INCLUDED
 
@@ -120,10 +119,10 @@ In the second category, where models do not embed data, techniques are grouped d
 This category are models that considered to privacy leakage extreme or very high risk. The model produces explicitly includes data. Any TRE should consider carefully this type of models. If supported, extensive details of pre-processing of the input data and/or the processed dataset will be required for evaluation of privacy risks.
 
 > [!TIP]
-> Check the model file size. Models that contain data are often large or very large.
+> *Check the model file size. Models that contain data are often large or very large.*
 
 > [!IMPORTANT]
-> In general, do not perform adversarial attacks on these type of model such as membership inference or attribute inference. The danger is in the stored data, therefore subject can be identified directly. Adversarial attacks do not provide any extra information for disclosure control.
+> *In general, do not perform adversarial attacks on these type of model such as membership inference or attribute inference. The danger is in the stored data, therefore subject can be identified directly. Adversarial attacks do not provide any extra information for disclosure control.*
 
 <!--## $${\text{\color{blue}Group\ 1:\ Lazy Learners or Instance-Based\ Models.}}$$-->
 ### Group A.1. Instance-based or lazy learners
@@ -148,7 +147,7 @@ The best knowm example is 1-Nearest Neighbour which effectively says *"What's th
 The risk from this group of models occurs because they directly embed members of the training data in the model.
 
 > [!CAUTION]
-> This  risk applies **regardless** of the type of output.
+> *This  risk applies **regardless** of the type of output.*
 
 #### Mitigation
 
@@ -158,7 +157,7 @@ The mitigation that **must** be applied is that the preprocessing sufficiently r
 - For example, the data might be transformed into a synthetic dataset via a 'Differentially' Private' embedding.
 
 > [!WARNING]
-> This mitigation does not necessarily guard against other risks, such as class disclosure.
+> *This mitigation does not necessarily guard against other risks, such as class disclosure.*
 
 #### Secondary Risks
 
@@ -239,12 +238,16 @@ Whether this is plausible will depend entirely on the run-time it took to train 
 
 <!--<div style="height:10px;background:black;width:400"></div>-->
 
+---
+
 ## Category B: Eager learners
 
 This category are lower privacy risk type of ML models. Data is not stored, however, in some circumstances might leak certain specific groups of data.
 
 <!--## $${\text{\color{blue}Group\ 2:\ Regression\ Models}}$$-->
 ### Group B.1. Regression models
+
+Regression models predict a continuous numerical values based on one or more features.
 
 These are models that have been trained to make a numerical prediction - in which we do not include probability of some event or class occurring.  
 Examples from different domains include: air pollutant levels, risk of re-offending, duration of hospital stay, etc.
@@ -348,7 +351,7 @@ Classification models can be created with most Machine Learning Algorithms
 Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 - used for commercial Large Language Models to try and prevent them giving certain responses
-- but recent reports suggest that [these defences can be broken](https://www.theguardian.com/technology/2024/apr/03/many-shot-jailbreaking-ai-artificial-intelligence-safety-features-bypass?CMP=Share_iOSApp_Other)
+- but recent reports suggest that [these defences can be broken](https://www.theguardian.com/tech|nology/2024/apr/03/many-shot-jailbreaking-ai-artificial-intelligence-safety-features-bypass?CMP=Share_iOSApp_Other)
 
 <div style="height:10px;background:black;width:400"></div>
 
@@ -364,53 +367,48 @@ Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221�
 
 #### Risks
 
-|Model type    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Property inference | Linkage attack | Computational cost|
-|---|---|---|---|---|---|---|---|--|
-|Lazy learners|🔴🟥❌|🔴🟥✔|🔴|🔴|🔴|🔴|🔴|&#x2191;|
-|Regression models|🟢|🔴|🟡|🔴|🔴|🔴|🔴|&#x2191;&#x2191;|
-|Classification|🟢|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;|
-|Models producing semi-structured outputs|🟢|🔴|🔴|🔴|🟡|🔴|🔴|&#x2191;&#x2191;&#x2191;|
-|Models producing unstructured outputs|🟡|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;|
-|Foundation models|🔴🔺🟥|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+<style>
+    .heatMap {
+        width: 100%;
+        text-align: center;
+    }
+    .heatMap th {
+        background: grey;
+        text-align: center;
+    }
+</style>
 
-Legend:
-Event likelihood
-🟢 Low or very low
-🟡 Medium
-🔴 High
+<div class="heatMap">
 
-Severity/Consequences/Impact
-🟩 Low
-🟨 Medium
-🟥 Catastrophic
+| Category | Type of model | Risk | Mitigation | Stage | Residual risks | Adversarial attacks required | Computational cost |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Stored data | Instance-based | - Data included in the model 🔴🟥| - Anonymise data <br/> - Use synthetic data instead | - Design<br/> - Governance<br/> - Development| - Small group reporting 🔴🟨 <br> - Class disclosure 🔴🟨 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
+| Store data | Foundation models | - Data included in the model🔴🟨 <br/> - Small group reporting🟡🟩<br/> - Class Disclosure 🟡🟩 <br/> - Attribute Inference for known members🟢🟥 | - Import a pre-trained model, change'head' and train for a new application without affecting the rest of the foundation model.<br/> - Import a pre-trained model, change head, then adapt the head and the 'body' of foundation model weights.<br/> - Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+| Eager learners | Regression models | - Small group reporting 🟢🟨<br/> - Class disclosure 🟢🟨 | - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢🟨| &#x2191;&#x2191;|
+| Eager learners | Classification models | - Small group reporting 🟢🟨 <br/> - Class Disclosure 🟢🟨 <br/> |  |  |  | Required always 🟢🟨| &#x2191;&#x2191;|
+| Eager learners | Models producing semi-structured outputs |  - Small group reporting 🟢🟨 <br/> - Class Disclosure 🟢🟨  |  |  |  | Required always 🟢🟨| &#x2191;&#x2191;&#x2191;|
+| Eager learners | Models producing unstructured outputs |  - Regurgitate implicitly stored training data 🟡🔴 <br/> - Small group reporting 🟢🟨 <br/> - Class Disclosure 🟢🟨  | - anonymise the text | - Design <br/> - Development | - Some forms of personal data might still be present  | Required always 🟢🟨 | &#x2191;&#x2191;&#x2191;|
 
-Mitigation measures
-❌ Not possible
-✔  Possible
+</div>
 
-❓Unknown
+**Legend**
+
+*Event likelihood*<br/>
+🟢 Low or very low<br/>
+🟡 Medium<br/>
+🔴 High<br/>
+
+*Severity/Consequences/Impact*<br/>
+🟩 Low<br/>
+🟨 Medium<br/>
+🟥 Catastrophic<br/>
+
 
 Risk classification:
 
 - How likely is the event/specific type of risk to happen.
 - The impact it has. For example, for disclosure control could be something such as exposing 1 or 2 records versus exposing all/almost all records.
-- How easy would it be to apply a successful mitigation strategy? - sometimes it might be possible, but it might impact the output negatively. So it has the be a balance between technically possible and achievable in practice?
 
-#### Mitigations
-
-The following table has a list of mitigations measures and to which risk they can protect against.
-
-|Mitigation    | Encoded data | Small group reporting | Class disclosure | Membership Inference | Attribute Inference | Model Inversion | Linkage attack |
-|---|---|---|---|---|---|---|---|
-|Differentially private methods||||||||
-|Use synthetic data instead||||||||
-|Dataset anonymisation||||||||
-|Data grouping||||||||
-|Predictions return minimal information (e.g. Yes/No)||||||||
-|||||||||
-|||||||||
-|||||||||
-|||||||||
 
 #### References
 
