@@ -36,28 +36,47 @@ According to our classification, you need to decide which case applies to the sp
 
 At the end of this document there is a table summary which can be useful to get an overall idea. However, the table in isolation might be out of context. So it is recommended to always read the relevant text before taking any decision.
 
+## Assumptions
+
+It is assumed data is pseudo-anonymised following current existing processes prior the TRE users can access the dataset.
+
+All the projects and outputs from a project will go under output check prior to release. This process may vary from TRE to TRE.
+
+All the users in a TRE should take mandatory training.
+
+This recommendations in this guide are additional to those normally employed for traditional statistical disclosure control and ordinary mitigation strategies.
+
 ## Categorisation
 
 ```mermaid
----
-config:
-  theme: redux-color
----
-mindmap
-  root((Machine Learning))
-  ::icon(fa fa-cogs)
-    Store data
-    ::icon(fa fa-users)
-      Instance-based
-      Foundation models
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#000080',
+      'primaryTextColor': '#fff',
+      'primaryBorderColor': '#808080',
+      'lineColor': '#000000',
+      'secondaryColor': '#7fb3d5',
+      'tertiaryColor': '#a9cce3'
+    }
+  }
+}%%
+flowchart LR
+    ml(Machine Learning types by output produced)
+    subgraph a["**Store data**"]
+      a1(Instance based)
+      a2(Foundation models)
+    end
+    subgraph b["**Do not store data**"]
+      b1(Regression models)
+      b2(Classification models)
+      b3(Models producing semi-structured outputs)
+      b4(Models producing unstructured outputs)
+    end
+    ml==>a
+    ml==>b
 
-    Eager learners
-    ::icon(fas fa-cubes)  
-      Regression
-      Classification
-      Semi-structured outputs
-      Unstructured outputs
-      
 ```
 
 To evaluate privacy risks, ML models are classified according to the architecture of the models produced. The first category are all those methods which data is required to be stored as part of the model to make predictions, and the second one are the ones which no not contain embedded data. This include Instance-based (some refers to them as *lazy learners*) and Foundation Models also known as *encoder-decoder* architecture models. While the first subgroup explicitly include data, Foundation models contain pre-processed data, and are typically designed so that they can subsequently be rapidly repurposed for a range of related classification or regression tasks.
@@ -240,23 +259,29 @@ Whether this is plausible will depend entirely on the run-time it took to train 
 
 ---
 
-## Category B: Eager learners
+## Category B: Do not store data
 
 This category are lower privacy risk type of ML models. Data is not stored, however, in some circumstances might leak certain specific groups of data.
 
 <!--## $${\text{\color{blue}Group\ 2:\ Regression\ Models}}$$-->
 ### Group B.1. Regression models
 
-Regression models predict a continuous numerical values based on one or more features.
+Regression models predict a continuous numerical values based on one or more features or predictor variables.
 
 These are models that have been trained to make a numerical prediction - in which we do not include probability of some event or class occurring.  
-Examples from different domains include: air pollutant levels, risk of re-offending, duration of hospital stay, etc.
+Examples from different domains include: air pollutant levels, risk of re-offending, duration of hospital stay, drug response analysis, etc.
 
 In general the risks for this group are the same as for well understood Linear/Logistic/Logit Regression.
 
 #### Examples of Regression Models
 
 Regression models can be created with most Machine Learning Algorithms, as well as many different statistical techniques such as the *ARIMA* family of models.
+
+This group includes:
+
+- Simple and multiple linear regression models, which are the most well-known ML technique.
+- Polynomial regression for when the relationship between variables is not linear.
+- LASSO(least absolute shrinkage and selection operator) and ridge regression which are commonly applied when the dataset contains large number of features.
 
 #### Principal risk: *Small Group Reporting*
 
@@ -291,8 +316,12 @@ Some models may implicitly or explicitly perform *piece-wise regression* in  whi
 <!--## $${\text{\color{blue}Group\ 3:\ Classification\ Models}}$$-->
 ### Group B.2. Classification Models.
 
-These models  are designed to predict the probability that a record is associated with different output classes.
+These models are designed to predict the probability that a record is associated with different output classes. For example, a model that can predict the probability (or risk) that a patient may suffer from cancer. Another example would be a model capable to predict if a given image contain similar types of vehicles like a car, a van, a bicycle, a motorbike, a lorry etc and it shows for each type of vehicle how likely it is the image contains them.
+
 This could be a single value *P(voting in next election)* or the likelihoods associated with a finite set of classes e.g. *P(votes for party X)* or linking genetic/health records to different disease diagnoses.
+
+> [!IMPORTANT]
+> *Note that in traditional type of ML classification methods include KNN or SVMs, however, since these methods embed data, for the purpose of disclosure control such methods are excluded from this category.*
 
 #### Examples of Classification Models
 
@@ -380,14 +409,14 @@ Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221�
 
 <div class="heatMap">
 
-| Category | Type of model | Risk | Mitigation | Stage | Residual risks | Adversarial attacks required | Computational cost |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Stored data | Instance-based | - Data included in the model 🔴🟥| - Anonymise data <br/> - Use synthetic data instead | - Design<br/> - Governance<br/> - Development| - Small group reporting 🔴🟨 <br> - Class disclosure 🔴🟨 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
-| Store data | Foundation models | - Data included in the model🔴🟨 <br/> - Small group reporting🟡🟩<br/> - Class Disclosure 🟡🟩 <br/> - Attribute Inference for known members🟢🟥 | - Import a pre-trained model, change'head' and train for a new application without affecting the rest of the foundation model.<br/> - Import a pre-trained model, change head, then adapt the head and the 'body' of foundation model weights.<br/> - Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
-| Eager learners | Regression models | - Small group reporting 🟢🟨<br/> - Class disclosure 🟢🟨 | - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢🟨| &#x2191;&#x2191;|
-| Eager learners | Classification models | - Small group reporting 🟢🟨 <br/> - Class Disclosure 🟢🟨 <br/> |  |  |  | Required always 🟢🟨| &#x2191;&#x2191;|
-| Eager learners | Models producing semi-structured outputs |  - Small group reporting 🟢🟨 <br/> - Class Disclosure 🟢🟨  |  |  |  | Required always 🟢🟨| &#x2191;&#x2191;&#x2191;|
-| Eager learners | Models producing unstructured outputs |  - Regurgitate implicitly stored training data 🟡🔴 <br/> - Small group reporting 🟢🟨 <br/> - Class Disclosure 🟢🟨  | - anonymise the text | - Design <br/> - Development | - Some forms of personal data might still be present  | Required always 🟢🟨 | &#x2191;&#x2191;&#x2191;|
+| Category | Type of model | Risk | Event likelihood | Severity | Mitigation | Stage | Residual risks | Adversarial attacks required | Computational cost |
+| --- | --- | --- | --- | --- | --- | --- | --- |--- | --- |
+| Stored data | Instance-based | - Data included in the model |🔴|🟥| - Do not release of the TRE <br>- Anonymise data <br/> - Use synthetic data instead<br/> - Remove vectors where possible<br/> - Deploy to MQC system | - Design<br/> - Governance<br/> - Development<br/> - Release| - Small group reporting 🔴🟨 <br> - Class disclosure 🔴🟨 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
+| Store data | Foundation models | - Data included in the model <br/> - Small group reporting <br/> - Class Disclosure  <br/> - Attribute Inference for known members |🔴 <br> 🟡<br/> 🟡<br/> 🟢<br>|🟨 <br>🟩<br>🟩<br>🟥<br>| - Do not release of the TRE <br> - Import a pre-trained model, change'head' and train for a new application without affecting the rest of the foundation model.<br/> - Import a pre-trained model, change head, then adapt the head and the 'body' of foundation model weights.<br/> - Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+| Do not store data | Regression models | - Small group reporting <br/> - Class disclosure  |🟢<br>🟢|🟨<br>🟨| - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢🟨| &#x2191;&#x2191;|
+| Do not store data | Classification models | - Small group reporting  <br/> - Class Disclosure  <br/> | 🟢<br>🟢|🟨<br>🟨| |  |  | Required always 🟢🟨| &#x2191;&#x2191;|
+| Do not store data | Models producing semi-structured outputs |  - Small group reporting  <br/> - Class Disclosure  | 🟢<br>🟢 |🟨 <br>🟨||  |  | Required always 🟢🟨| &#x2191;&#x2191;&#x2191;|
+| Do not store data | Models producing unstructured outputs |  - Regurgitate implicitly stored training data  <br/> - Small group reporting  <br/> - Class Disclosure   |🟡<br>🟢<br>🟢 |🟥<br>🟨<br>🟨|- Do not release of the TRE <br>- Anonymise the text<br/> - Deploy to MQC system | - Design <br/> - Development | - Some forms of personal data might still be present  | Not possible at the moment(?) | &#x2191;&#x2191;&#x2191;&#x2191;|
 
 </div>
 
@@ -409,6 +438,20 @@ Risk classification:
 - How likely is the event/specific type of risk to happen.
 - The impact it has. For example, for disclosure control could be something such as exposing 1 or 2 records versus exposing all/almost all records.
 
+<!--actors: data controller, model development team, model owner, product users-->
+<div class="heatMap">
+
+| Stage | Mitigation | Risk | Groups of model| Responsibilities |
+| --- | --- | --- | --- | --- |
+| Design  | - Dataset big enough<br/> - Engage with data expert  |   |   | - Data controller<br/> - Model development team<br/> |
+| Governance  | - License of model  |   |   |   |
+| Pre-project/data | - Training  |   |   |   |
+| Development  | - Test data must not be seen by the model at any point. <br/> - Select carefully hyperparameters<br/> - Check size of groups<br/> |   |   |  - Model development team<br/>  |
+| Evaluation  | - Modify hyperparameters<br/> - Choose appropriate metrics  |   |   | - Develoopment team |
+| Disclosure control  |  - Attack simulation<br/> - |   |   | - Data controller |
+| Release  |  - MQC system<br/> - User and result register<br/>|   |   | - Model owner |
+
+</div>
 
 #### References
 
