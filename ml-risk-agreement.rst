@@ -69,7 +69,7 @@ We use the terms:
   - Test data is used at the end of the process to *estimate the
     accuracy* of the selected model on unseen data.
 
-  - 
+   
 
 - ‘\ **privacy leakage**\ ’to refer to sensitive data being exposed/revealed. This will usually result from an external person running various ‘attacks’
   on a model that may reveal (parts of) the confidential data it was
@@ -83,10 +83,11 @@ We use the terms:
   as implemented in the python package
   `sacroml <https://github.com/AI-SDC/SACRO-ML>`__.
 
-- Text in blue font is intended to provide illustrative examples.
+..
 
-:mark:`
-`
+   Text in this format is intended to provide illustrative examples.
+
+
 
 Assumptions:
 ------------
@@ -114,10 +115,7 @@ Assumptions:
   aware no model can ever be guaranteed to be completely immune to
   attacks.
 
-..
-
-   Therefore, the level of confidence in a model’s security depends on
-   how many different tests for vulnerability it successfully passes.
+  Therefore, the level of confidence in a model’s security depends on how many different tests for vulnerability it successfully passes.
 
 - Researchers *may* make use of tools (such as sacroml) to assess the
   vulnerability of their models, and use that information to adapt their
@@ -145,8 +143,7 @@ Assumptions:
   - TRE staff may need to see their code. Whether this requires a
     Non-Disclosure Agreement is out of the scope of this document.
 
-:mark:`
-`
+
 
 Summary of recommendations
 ==========================
@@ -170,9 +167,9 @@ Summary of recommendations
 |                 |    to run certain        |                          |
 |                 |    attacks.              |                          |
 +-----------------+--------------------------+--------------------------+
-| Researcher      | 1. So attribute          | In the form of:          |
+| Researcher      | 1. So attribute          |In the form of:           |
 | provides        |    inference attacks can |                          |
-| details of      |    be run                | - a single file of       |
+| details of      |    be run                |- a single file of        |
 | preprocessing   |                          |   python code containing |
 | applied to      | 2. If cross validation   |   a method (preferably   |
 | ‘raw’ data      |    is used, or just to   |   called                 |
@@ -181,40 +178,39 @@ Summary of recommendations
 | model.          |    keep some data back   |   the ‘raw’ format       |
 |                 |    from researchers.     |   provided and outputs   |
 | Note that       |                          |   it in the form         |
-| deciding the    | ..                       |   presented to the       |
+| deciding the    |                          |   presented to the       |
 | most effective  |                          |   model.                 |
 | pre-processing  |    Hence, they must be   |                          |
-| is a routine    |    able to apply the     | - This might include     |
+| is a routine    |    able to apply the     |- This might include      |
 | part of the     |    preprocessing to any  |   ‘normalising’          |
 | Machine         |    withheld data, so     |   variables,             |
 | Learning        |    they can present it   |   standardising image    |
 | workflow        |    to the model.         |   sizes, etc.            |
 | conducted       |                          |                          |
-| *inside* the    | 3. Because in certain    | - a mapping where        |
-| TRE.            |    cases TRES may wish   |   appropriate. For       |
-|                 |    to be able to see all |   example, if a ‘raw’    |
-| Note that the   |    of the researcher’s   |   feature that takes one |
-| sacro-ml        |    code. It is good      |   of *n* distinct values |
-| package is      |    practice for the      |   has been transformed   |
-| currently being |    ‘pre-processing’ code |   via ‘one-hot-encoding’ |
-| refined to make |    to be defined in      |   into *n* new           |
-| the process of  |    ‘functions’, separate |   complementary binary   |
-| specifying      |    from the code used to |   features, it is useful |
-| preprocessing   |    train the model. Code |   to know which these    |
-| as simple as    |    that is separated     |   are (and that by       |
-| possible        |    into                  |   inference they must    |
-|                 |    functions/modules is  |   sum to 1)              |
-|                 |    easier to scrutinise  |                          |
-|                 |    and understand. .     | ..                       |
+| *inside* the    | 3. Because in certain    |- a mapping where         |
+| TRE.            |    cases TRES may wish   |   appropriate.           |
+|                 |    to be able to see all |                          |
+| Note that the   |    of the researcher’s   |    For example, if a     |
+| sacro-ml        |    code. It is good      |    feature that takes one|
+| package is      |    practice for the      |    of *n* distinct values|
+| currently being |    ‘pre-processing’ code |    has been transformed  |
+| refined to make |    to be defined in      |    via ‘one-hot-encoding’|
+| the process of  |    ‘functions’, separate |    into *n* new          |
+| specifying      |    from the code used to |    complementary binary  |
+| as simple as    |    that is separated     |    features, it is useful|
+| possible        |    into                  |    to know which these   |
+|                 |    functions/modules is  |    are (and that by      |
+|                 |    easier to scrutinise  |    inference they must   |
+|                 |    and understand. .     |    sum to 1)             | 
 |                 |                          |                          |
-|                 | ..                       |    Supporting contextual |
-|                 |                          |    documentation may be  |
-|                 |    For example (1): if   |    appropriate to        |
-|                 |    the user has          |    explain to TREs how   |
-|                 |    standardised a        |    the preprocessing has |
-|                 |    variable to the range |    been conducted,       |
-|                 |    [0,1] using a         |    variable names        |
-|                 |    \`min-max scaler’,    |    chosen, etc.          |
+|                 | ..                       |-  Supporting contextual  |
+|                 |                          |   documentation may be   |
+|                 |    For example (1): if   |   appropriate to         |
+|                 |    the user has          |   explain to TREs how    |
+|                 |    standardised a        |   the preprocessing has  |
+|                 |    variable to the range |   been conducted,        |
+|                 |    [0,1] using a         |   variable names         |
+|                 |    \`min-max scaler’,    |   chosen, etc.           |
 |                 |    then the extreme      |                          |
 |                 |    values in the         |                          |
 |                 |    training data can be  |                          |
@@ -307,8 +303,7 @@ Summary of recommendations
 |                 |   desirable              |                          |
 +-----------------+--------------------------+--------------------------+
 
-:mark:`
-`
+
 
 Appendix A: Background: What risks does SACRO_ML assess and how?
 ================================================================
@@ -343,7 +338,7 @@ worst-case scenario (described below).
 Below we briefly describe these tests, and what data needs to be made
 available to the risk assessment process.
 
- Membership and Attribute inference attacks
+Membership and Attribute inference attacks
 -------------------------------------------
 
 The `GRAIMATTER Green paper <https://doi.org/10.5281/zenodo.7089491>`__
@@ -373,14 +368,12 @@ model.
 
 - This has implications for the choice of risk metrics.
 
-..
+  Sacro-ml currently reports a range of metrics. 
+  The intention is for the developers and stake-holders to co-design the most informative
+  presentation of these results.
 
-   Sacro-ml currently reports a range of metrics. The intention is for
-   the developers and stake-holders to co-design the most informative
-   presentation of these results.
-
-- This also has implications for the attack ‘set-up’: in particular for
-  attribute inference, the simulated attack should be allowed to say,
+- This also has implications for the attack ‘set-up’:
+  In particular for attribute inference, the simulated attack should be allowed to say,
   ‘\ *don’t know’*, rather than forcing it to make prediction\ *s*. This
   has a dramatic effect on the accuracy of the predictions it does make.
 
@@ -396,24 +389,20 @@ Thus, sacro-ml estimates an upper-bound of the risk through a
 Currently, sacro-ml implements a number of different attacks based on
 the model’s
 
-- output probabilities: the premise being that a model will be more
-  confident about records it has seen during training [3]_.
+- *output probabilities*: the premise being that a model will be more
+  confident about records it has seen during training [3].
 
-..
+  In some cases, these may be provided in a file.
+  Generally it is more robust (i.e. relies less on trust and has less scope for human error)
+  for the model and data to be loaded and create these at ‘attack-time’
 
-   In some cases, these may be provided in a file. Generally it is more
-   robust (i.e. relies less on trust and has less scope for human error)
-   for the model and data to be loaded and create these at ‘attack-time’
-
-- ‘losses’: the premise being that the chance of a model’s prediction
+- *losses* (errors): the premise being that the chance of a model’s prediction
   being incorrect for a given record *may be* different if the record
   was used for training [4]_.
 
-..
+  These attacks absolutely require being able to load model and data.
 
-   These attacks absolutely require being able to load model and data.
-
-   The intention is that this list will be continuously updated as the
+- The intention is that this list will be continuously updated as the
    field evolves.
 
 Implications for risk assessment
@@ -422,8 +411,6 @@ Implications for risk assessment
 1. **Given only the model’s output probabilities for train/test
    datasets, sacro-ml can only run probability-based membership
    inference attacks**.
-
-..
 
    However, since these attacks have been questioned in the literature,
    they are more useful as an early warning’ system
