@@ -71,7 +71,7 @@ We use the terms:
 
   - 
 
-- ‘\ **privacy leakage**\ ’ to refer to the results of various ‘attacks’
+- ‘\ **privacy leakage**\ ’to refer to sensitive data being exposed/revealed. This will usually result from an external person running various ‘attacks’
   on a model that may reveal (parts of) the confidential data it was
   trained on (sec 3.2).
 
@@ -83,8 +83,10 @@ We use the terms:
   as implemented in the python package
   `sacroml <https://github.com/AI-SDC/SACRO-ML>`__.
 
-   Text in this font is intended to provide illustrative examples.
+- Text in blue font is intended to provide illustrative examples.
 
+:mark:`
+`
 
 Assumptions:
 ------------
@@ -98,10 +100,9 @@ Assumptions:
   pytorch. (This list of supported packages is expected to expand in due
   course).
 
-- The model to be output must output numerical predictions. 
-  
-   For example, the probability that a given record comes from a given class A 
-   (a number between 0 and 1), rather than the text label “classA”.
+- The model to be output must output numerical predictions. For example,
+  the probability that a given record comes from a given class A (a
+  number between 0 and 1), rather than the text label “classA”.
 
 - Researchers are familiar with standard Statistical Disclosure Control
   (SDC) concepts, even if they may not recognize them by name. These
@@ -113,8 +114,10 @@ Assumptions:
   aware no model can ever be guaranteed to be completely immune to
   attacks.
 
-  Therefore, the level of confidence in a model’s security depends on
-  how many different tests for vulnerability it successfully passes.
+..
+
+   Therefore, the level of confidence in a model’s security depends on
+   how many different tests for vulnerability it successfully passes.
 
 - Researchers *may* make use of tools (such as sacroml) to assess the
   vulnerability of their models, and use that information to adapt their
@@ -142,166 +145,170 @@ Assumptions:
   - TRE staff may need to see their code. Whether this requires a
     Non-Disclosure Agreement is out of the scope of this document.
 
+:mark:`
+`
 
 Summary of recommendations
 ==========================
 
-+-----------------+---------------------------+-----------------------------+
-| What is needed? | Why is it needed?         | Comments/Details            |
-+=================+===========================+=============================+
-| **Researcher    |    If a researcher plans  |                             |
-| provides**      |    to use                 |                             |
-| details of      |    cross-validation [2]_  |                             |
-| their planned   |    to estimate accuracy,  |                             |
-| training and    |    then *all* the data    |                             |
-| testing process |    given to them should   |                             |
-| at project      |    be treated as          |                             |
-| approval time.  |    ‘training’ data.       |                             |
-|                 |                           |                             |
-|                 |    In that case the TRE   |                             |
-|                 |    **must** keep some     |                             |
-|                 |    data back from         |                             |
-|                 |    researchers in order   |                             |
-|                 |    to run certain         |                             |
-|                 |    attacks.               |                             |
-+-----------------+---------------------------+-----------------------------+
-| Researcher      | 1. So attribute           | In the form of:             |
-| provides        |    inference attacks can  |                             |
-| details of      |    be run                 | - a single file of          |
-| preprocessing   |                           |   python code containing    |
-| applied to      | 2. If cross validation    |   a method (preferably      |
-| ‘raw’ data      |    is used, or just to    |   called                    |
-| before it is    |    strengthen certain     |   **preprocess()** )        |
-| input to the    |    attacks, TREs may      |   which takes in data in    |
-| model.          |    keep some data back    |   the ‘raw’ format          |
-|                 |    from researchers.      |   provided and outputs      |
-| Note that       |                           |   it in the form            |
-| deciding the    |                           |   presented to the          |
-| most effective  |                           |   model.                    |
-| pre-processing  |    Hence, they must be    |                             |
-| is a routine    |    able to apply the      | - This might include        |
-| part of the     |    preprocessing to any   |   ‘normalising’             |
-| Machine         |    withheld data, so      |   variables,                |
-| Learning        |    they can present it    |   standardising image       |
-| workflow        |    to the model.          |   sizes, etc.               |
-| conducted       |                           |                             |
-| *inside* the    | 3. Because in certain     | - a mapping where           |
-| TRE.            |    cases TRES may wish    |   appropriate.              |
-|                 |    to be able to see all  |                             |
-| Note that the   |    of the researcher’s    |    For example, if a ‘raw’  |
-| sacro-ml        |    code. It is good       |    feature that takes one   |
-| package is      |    practice for the       |    of *n* distinct values   |
-| currently being |    ‘pre-processing’ code  |    has been transformed     |
-| refined to make |    to be defined in       |    via ‘one-hot-encoding’   |
-| the process of  |    ‘functions’, separate  |    into *n* new             |
-| specifying      |    from the code used to  |    complementary binary     |
-| preprocessing   |    train the model. Code  |    features, it is useful   |
-| as simple as    |    that is separated      |    to know which these      |
-| possible        |    into                   |    are (and that by         |
-|                 |    functions/modules is   |    inference they must      |                   
-|                 |    and understand. .      |    sum to 1                 |         
-|                 |                           |                             |
-|                 |                           | - Supporting contextual     |
-|                 |                           |   documentation may be      |
-|                 |     For example (1): if   |   appropriate to            |
-|                 |     the user has          |   explain to TREs how       |
-|                 |     standardised a        |   the preprocessing has     |
-|                 |     variable to the range |   been conducted,           |
-|                 |     [0,1] using a         |   variable names            |
-|                 |     \`min-max scaler’,    |   chosen, etc.              |
-|                 |     then the extreme      |                             |
-|                 |     values in the         |                             |
-|                 |     training data can be  |                             |
-|                 |     reverse-engineered.   |                             |
-|                 |     Whether this is an    |                             |
-|                 |     issue will depend on  |                             |
-|                 |     the data.             |                             |
-|                 |                           |                             |
-|                 |     For example (2) if    |                             |
-|                 |     the user has          |                             |
-|                 |     (incorrectly) applied |                             |
-|                 |     scaling to the data   |                             |
-|                 |     *before splitting it  |                             |
-|                 |     into training and     |                             |
-|                 |     test sets,* then the  |                             |
-|                 |     preprocessing also    |                             |
-|                 |     contains information  |                             |
-|                 |     about the test set.   |                             |
-|                 |                           |                             |
-|                 | 4. **Because it may be    |                             |
-|                 |    possible to argue      |                             |
-|                 |    that**                 |                             |
-|                 |    **pre-processing       |                             |
-|                 |    renders the dataset    |                             |
-|                 |    sufficiently           |                             |
-|                 |    anonymised that the    |                             |
-|                 |    model can safely be    |                             |
-|                 |    released**             |                             |
-+-----------------+---------------------------+-----------------------------+
-| Researcher      | Membership and attribute  | This needs to be in         |
-| provides        | inference attacks         | machine-actionable          |
-| sufficient      | quantify the risk that    | format - as either          |
-| details to      | an external attacker      | separate                    |
-| exactly         | could reliably infer:     | files/directories or as     |
-| replicate the   |                           | two lists of filenames.     |
-| training / test | - *whether* a record was  |                             |
-| splits.         |   in the training set;    | Ideally researchers         |
-|                 |   and                     | would provide both the      |
-|                 |                           | \`raw’ and preprocessed     |
-|                 | - *missing values* from   | data as files to be         |
-|                 |   a training record.      | ingested by sacro-ml.       |
-|                 |                           |                             |
-|                 | Quantifying these risks   | If ‘raw’ format data is     |
-|                 | requires knowledge of     | not available, it may       |
-|                 | **exactly** which         | not be possible to run      |
-|                 | records were used to      | attribute inference         |
-|                 | train the model.          | attacks.                    |
-|                 |                           |                             |
-|                 | The assessment process    | If train/test data is       |
-|                 | can be improved via       | only provided in ‘raw’      |
-|                 | knowledge of exactly      | format then it **must**     |
-|                 | which records were used   | be possible to run the      |
-|                 | to test the trained       | code to preprocess that     |
-|                 | model.                    | data.                       |
-|                 |                           |                             |
-|                 |                           | **Note this                 |
-|                 |                           | preprocessing may in        |
-|                 |                           | future be automated, but    |
-|                 |                           | currently requires          |
-|                 |                           | manual input from TRE       |
-|                 |                           | staff**                     |
-+-----------------+---------------------------+-----------------------------+
-| Researcher      | Most attacks require the  |                             |
-| provides        | ability to load the       |                             |
-| sufficient      | stored file and access    |                             |
-| details         | it.                       |                             |
-| (filepaths      |                           |                             |
-| etc.) to load   |                           |                             |
-| the model from  |                           |                             |
-| file            |                           |                             |
-+-----------------+---------------------------+-----------------------------+
-| Researcher runs | Capturing the             | This does not stop          |
-| a script (part  | information needed to     | researchers running         |
-| of the sacroml  | run attacks in a          | attacks themselves.         |
-| toolkit) to     | standardised format       |                             |
-| provide all     | enables:                  |                             |
-| those details   |                           |                             |
-|                 | - storing the             |                             |
-|                 |   information that might  |                             |
-|                 |   be useful for a         |                             |
-|                 |   model-use register      |                             |
-|                 |                           |                             |
-|                 | - decoupling model        |                             |
-|                 |   training from model     |                             |
-|                 |   risk assessment. That   |                             |
-|                 |   enables these           |                             |
-|                 |   processes to happen in  |                             |
-|                 |   separate ‘virtual       |                             |
-|                 |   areas’ of the TRE if    |                             |
-|                 |   desirable               |                             |
-+-----------------+---------------------------+-----------------------------+
++-----------------+--------------------------+--------------------------+
+| What is needed? | Why is it needed?        | Comments/Details         |
++=================+==========================+==========================+
+| Researcher      |    If a researcher plans |                          |
+| provides        |    to use                |                          |
+| details of      |    cross-validation [2]_ |                          |
+| their planned   |    to estimate accuracy, |                          |
+| training and    |    then *all* the data   |                          |
+| testing process |    given to them should  |                          |
+| at project      |    be treated as         |                          |
+| approval time.  |    ‘training’ data.      |                          |
+|                 |                          |                          |
+|                 |    In that case the TRE  |                          |
+|                 |    **must** keep some    |                          |
+|                 |    data back from        |                          |
+|                 |    researchers in order  |                          |
+|                 |    to run certain        |                          |
+|                 |    attacks.              |                          |
++-----------------+--------------------------+--------------------------+
+| Researcher      | 1. So attribute          | In the form of:          |
+| provides        |    inference attacks can |                          |
+| details of      |    be run                | - a single file of       |
+| preprocessing   |                          |   python code containing |
+| applied to      | 2. If cross validation   |   a method (preferably   |
+| ‘raw’ data      |    is used, or just to   |   called                 |
+| before it is    |    strengthen certain    |   **preprocess()** )     |
+| input to the    |    attacks, TREs may     |   which takes in data in |
+| model.          |    keep some data back   |   the ‘raw’ format       |
+|                 |    from researchers.     |   provided and outputs   |
+| Note that       |                          |   it in the form         |
+| deciding the    | ..                       |   presented to the       |
+| most effective  |                          |   model.                 |
+| pre-processing  |    Hence, they must be   |                          |
+| is a routine    |    able to apply the     | - This might include     |
+| part of the     |    preprocessing to any  |   ‘normalising’          |
+| Machine         |    withheld data, so     |   variables,             |
+| Learning        |    they can present it   |   standardising image    |
+| workflow        |    to the model.         |   sizes, etc.            |
+| conducted       |                          |                          |
+| *inside* the    | 3. Because in certain    | - a mapping where        |
+| TRE.            |    cases TRES may wish   |   appropriate. For       |
+|                 |    to be able to see all |   example, if a ‘raw’    |
+| Note that the   |    of the researcher’s   |   feature that takes one |
+| sacro-ml        |    code. It is good      |   of *n* distinct values |
+| package is      |    practice for the      |   has been transformed   |
+| currently being |    ‘pre-processing’ code |   via ‘one-hot-encoding’ |
+| refined to make |    to be defined in      |   into *n* new           |
+| the process of  |    ‘functions’, separate |   complementary binary   |
+| specifying      |    from the code used to |   features, it is useful |
+| preprocessing   |    train the model. Code |   to know which these    |
+| as simple as    |    that is separated     |   are (and that by       |
+| possible        |    into                  |   inference they must    |
+|                 |    functions/modules is  |   sum to 1)              |
+|                 |    easier to scrutinise  |                          |
+|                 |    and understand. .     | ..                       |
+|                 |                          |                          |
+|                 | ..                       |    Supporting contextual |
+|                 |                          |    documentation may be  |
+|                 |    For example (1): if   |    appropriate to        |
+|                 |    the user has          |    explain to TREs how   |
+|                 |    standardised a        |    the preprocessing has |
+|                 |    variable to the range |    been conducted,       |
+|                 |    [0,1] using a         |    variable names        |
+|                 |    \`min-max scaler’,    |    chosen, etc.          |
+|                 |    then the extreme      |                          |
+|                 |    values in the         |                          |
+|                 |    training data can be  |                          |
+|                 |    reverse-engineered.   |                          |
+|                 |    Whether this is an    |                          |
+|                 |    issue will depend on  |                          |
+|                 |    the data.             |                          |
+|                 |                          |                          |
+|                 |    For example (2) if    |                          |
+|                 |    the user has          |                          |
+|                 |    (incorrectly) applied |                          |
+|                 |    scaling to the data   |                          |
+|                 |    *before splitting it  |                          |
+|                 |    into training and     |                          |
+|                 |    test sets,* then the  |                          |
+|                 |    preprocessing also    |                          |
+|                 |    contains information  |                          |
+|                 |    about the test set.   |                          |
+|                 |                          |                          |
+|                 | 4. **Because it may be   |                          |
+|                 |    possible to argue     |                          |
+|                 |    that**                |                          |
+|                 |    **pre-processing      |                          |
+|                 |    renders the dataset   |                          |
+|                 |    sufficiently          |                          |
+|                 |    anonymised that the   |                          |
+|                 |    model can safely be   |                          |
+|                 |    released**            |                          |
++-----------------+--------------------------+--------------------------+
+| Researcher      | Membership and attribute | This needs to be in      |
+| provides        | inference attacks        | machine-actionable       |
+| sufficient      | quantify the risk that   | format - as either       |
+| details to      | an external attacker     | separate                 |
+| exactly         | could reliably infer:    | files/directories or as  |
+| replicate the   |                          | two lists of filenames.  |
+| training / test | - *whether* a record was |                          |
+| splits.         |   in the training set;   | Ideally researchers      |
+|                 |   and                    | would provide both the   |
+|                 |                          | \`raw’ and preprocessed  |
+|                 | - *missing values* from  | data as files to be      |
+|                 |   a training record.     | ingested by sacro-ml.    |
+|                 |                          |                          |
+|                 | Quantifying these risks  | If ‘raw’ format data is  |
+|                 | requires knowledge of    | not available, it may    |
+|                 | **exactly** which        | not be possible to run   |
+|                 | records were used to     | attribute inference      |
+|                 | train the model.         | attacks.                 |
+|                 |                          |                          |
+|                 | The assessment process   | If train/test data is    |
+|                 | can be improved via      | only provided in ‘raw’   |
+|                 | knowledge of exactly     | format then it **must**  |
+|                 | which records were used  | be possible to run the   |
+|                 | to test the trained      | code to preprocess that  |
+|                 | model.                   | data.                    |
+|                 |                          |                          |
+|                 |                          | **Note this              |
+|                 |                          | preprocessing may in     |
+|                 |                          | future be automated, but |
+|                 |                          | currently requires       |
+|                 |                          | manual input from TRE    |
+|                 |                          | staff**                  |
++-----------------+--------------------------+--------------------------+
+| Researcher      | Most attacks require the |                          |
+| provides        | ability to load the      |                          |
+| sufficient      | stored file and access   |                          |
+| details         | it.                      |                          |
+| (filepaths      |                          |                          |
+| etc.) to load   |                          |                          |
+| the model from  |                          |                          |
+| file            |                          |                          |
++-----------------+--------------------------+--------------------------+
+| Researcher runs | Capturing the            | This does not stop       |
+| a script (part  | information needed to    | researchers running      |
+| of the sacroml  | run attacks in a         | attacks themselves.      |
+| toolkit) to     | standardised format      |                          |
+| provide all     | enables:                 |                          |
+| those details   |                          |                          |
+|                 | - storing the            |                          |
+|                 |   information that might |                          |
+|                 |   be useful for a        |                          |
+|                 |   model-use register     |                          |
+|                 |                          |                          |
+|                 | - decoupling model       |                          |
+|                 |   training from model    |                          |
+|                 |   risk assessment. That  |                          |
+|                 |   enables these          |                          |
+|                 |   processes to happen in |                          |
+|                 |   separate ‘virtual      |                          |
+|                 |   areas’ of the TRE if   |                          |
+|                 |   desirable              |                          |
++-----------------+--------------------------+--------------------------+
 
-
+:mark:`
+`
 
 Appendix A: Background: What risks does SACRO_ML assess and how?
 ================================================================
@@ -336,7 +343,7 @@ worst-case scenario (described below).
 Below we briefly describe these tests, and what data needs to be made
 available to the risk assessment process.
 
-Membership and Attribute inference attacks
+ Membership and Attribute inference attacks
 -------------------------------------------
 
 The `GRAIMATTER Green paper <https://doi.org/10.5281/zenodo.7089491>`__
@@ -366,9 +373,11 @@ model.
 
 - This has implications for the choice of risk metrics.
 
-  Sacro-ml currently reports a range of metrics. The intention is for
-  the developers and stake-holders to co-design the most informative
-  presentation of these results.
+..
+
+   Sacro-ml currently reports a range of metrics. The intention is for
+   the developers and stake-holders to co-design the most informative
+   presentation of these results.
 
 - This also has implications for the attack ‘set-up’: in particular for
   attribute inference, the simulated attack should be allowed to say,
@@ -378,11 +387,11 @@ model.
 Thus, sacro-ml estimates an upper-bound of the risk through a
 ‘worst-case’ scenario, by posing the question:
 
- *How accurate are the predictions that an attacker can make given*
+*How accurate are the predictions that an attacker can make given*
 
- - *perfect knowledge of what is in the training data or not,*
+- *perfect knowledge of what is in the training data or not,*
 
- - *not requiring an in/out prediction to be made for every record*
+- *not requiring an in/out prediction to be made for every record*
 
 Currently, sacro-ml implements a number of different attacks based on
 the model’s
@@ -390,17 +399,22 @@ the model’s
 - output probabilities: the premise being that a model will be more
   confident about records it has seen during training [3]_.
 
-  In some cases, these may be provided in a file. Generally it is more
-  robust (i.e. relies less on trust and has less scope for human error)
-  for the model and data to be loaded and create these at ‘attack-time’
+..
+
+   In some cases, these may be provided in a file. Generally it is more
+   robust (i.e. relies less on trust and has less scope for human error)
+   for the model and data to be loaded and create these at ‘attack-time’
 
 - ‘losses’: the premise being that the chance of a model’s prediction
   being incorrect for a given record *may be* different if the record
   was used for training [4]_.
 
-  These attacks absolutely require being able to load model and data.
+..
 
-  The intention is that this list will be continuously updated as the field evolves.
+   These attacks absolutely require being able to load model and data.
+
+   The intention is that this list will be continuously updated as the
+   field evolves.
 
 Implications for risk assessment
 --------------------------------
@@ -408,6 +422,8 @@ Implications for risk assessment
 1. **Given only the model’s output probabilities for train/test
    datasets, sacro-ml can only run probability-based membership
    inference attacks**.
+
+..
 
    However, since these attacks have been questioned in the literature,
    they are more useful as an early warning’ system
@@ -435,10 +451,10 @@ Implications for risk assessment
 5. Attribute inference attacks need to know how the data was
    pre-processed.
 
-    For example, whether a categorical variable with N levels has been
-    ‘one-hot-encoded’ into N binary variables. 
+..
 
-   If this mapping information is not available,
+   For example, whether a categorical variable with N levels has been
+   ‘one-hot-encoded’ into N binary variables. If this is not available,
    attribute inference attacks cannot be performed.
 
 ‘Structural’ Attacks
