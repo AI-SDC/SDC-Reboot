@@ -273,14 +273,14 @@ Summary of recommendations
 |                 |                          | manual input from TRE    |
 |                 |                          | staff**                  |
 +-----------------+--------------------------+--------------------------+
-| Researcher      | Most attacks require the |                          |
-| provides        | ability to load the      |                          |
-| sufficient      | stored file and access   |                          |
-| details         | it.                      |                          |
-| (filepaths      |                          |                          |
-| etc.) to load   |                          |                          |
-| the model from  |                          |                          |
-| file            |                          |                          |
+| Researcher      | Most attacks require the |  Examples of packaging   |                        
+| provides        | ability to load the      |  models created from     |                        
+| sufficient      | stored file and access   |  toolkits e.g. *PyTorch* |                         
+| details         | it.                      |  and *scikit-learn*      |
+| (filepaths      |                          |  are in the examples     |
+| etc.) to load   |                          |  folder of the sacro-ml  |
+| the model from  |                          |  repository on github    |
+| file            |                          |  (see link above)        |
 +-----------------+--------------------------+--------------------------+
 | Researcher runs | Capturing the            | This does not stop       |
 | a script (part  | information needed to    | researchers running      |
