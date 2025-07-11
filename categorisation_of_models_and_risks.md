@@ -11,17 +11,15 @@
 
 Trusted Research Environments (TREs) are experiencing an increased demand on project using AI and ML. There is a need to clearly identify which risks, in terms of data privacy, TREs would face depending on the type of technique the user or researcher employs. Risks can be minimised and avoided in most cases, although cannot always be completely eliminated.
 
-![Prevent privacy leakage.](images/Prevent_data_leakage_diagram.png)*Electronic health records and other types of personal and sensitive data must be protected and ensure there is no privacy leakage when a Machine learning model is created.*
-
-Disclosure control of Machine Learning (ML) models goes beyond of output check.Mitigation strategies should be applied throughout the life cycle of an AI/ML project in a TRE, from the design to the release. Everyone involved in the project should play a role ensuring data privacy, from project leads to researchers and TRE staff. Projects specifically designed with data privacy in mind, are much more likely to be successful, and more cost and time efficient too.
+![Prevent privacy leakage.](images/Prevent_data_leakage_diagram.png)*Electronic health records (eHRs) and other types of personal and sensitive data must be protected and ensure there is no privacy leakage when a Machine learning model is created.*
 
 Previous work on GRAIMatter project[1], SACRO[2] and SDC-Reboot Community Interest Group showed the need for a simple and clear guidance to identify risks associated with ML projects, and the corresponding mitigation strategies.
 
 ### Purpose
 
-This document aims to capture the types of privacy risk and mitigations associated with different forms of Machine Learning.  It is a counter-part to the [statbarns taxonomy](https://doi.org/10.1007%2F978-3-031-69651-0_19)[3] for 'traditional analytic outputs from TREs. That consolidated 20+ years of theory by grouping analyses into types such as ‘frequencies, distribution shapes measures etc. With associated sets of risk and mitigations.
+This document aims to capture the types of privacy risks and mitigations associated with different forms of Machine Learning. It is a counter-part to the [statbarns taxonomy](https://doi.org/10.1007%2F978-3-031-69651-0_19)[3] for 'traditional analytic outputs from TREs. That consolidated 20+ years of theory by grouping analyses into types such as ‘frequencies, distribution shapes measures etc. With associated sets of risk and mitigations.
 
-The objective is to produce a taxonomy of risks with their corresponding mitigation strategies. When a TRE is faced with a new ML project proposal, where the model will be egressed, there are a small number of options to consider. TREs should have in place risks assessments and mitigations flows accordingly.
+The objective is to produce a taxonomy of risks with their corresponding mitigation strategies. When a TRE is faced with a new ML project proposal, where the model will be released from the TRE, there are a small number of options to consider. TREs should have in place risks assessments and mitigations flows accordingly.
 
 ![ML risks and mitigation strategies during the life cycle of a project.](images/AI-ML-Risks-Mitigations-diagram.png)*Each type of ML has a set of risks associated. The right mitigation strategies can be applied at the appropriate stage of the life cycle of a project.*
 
@@ -47,6 +45,10 @@ All the users in a TRE should take mandatory training.
 This recommendations in this guide are additional to those normally employed for traditional statistical disclosure control and ordinary mitigation strategies.
 
 ## Categorisation
+
+Traditionally ML is classified depending on the type of learning as supervised, unsupervised or cluster analysis, semi-supervised, dimensionality reduction, reinforcement learning and deep learning. With the continuous appearance of new methods, such as the foundation models, the classification system is subject to change and discrepancies. Such categorisation do not take into account which type of model the method produce, which is key to determine the appropriate Disclosure Control (DC) measures.
+
+A categorisation system capturing the architecture of the models produced specifically designed for disclosure control will allow a static and clear classification system for such purpose. Mitigation strategies and guidelines for DC can then be defined for each of the cases.
 
 ```mermaid
 %%{
@@ -79,14 +81,16 @@ flowchart LR
 
 ```
 
-To evaluate privacy risks, ML models are classified according to the architecture of the models produced. The first category are all those methods which data is required to be stored as part of the model to make predictions, and the second one are the ones which no not contain embedded data. This include Instance-based (some refers to them as *lazy learners*) and Foundation Models also known as *encoder-decoder* architecture models. While the first subgroup explicitly include data, Foundation models contain pre-processed data, and are typically designed so that they can subsequently be rapidly repurposed for a range of related classification or regression tasks.
+ML models privacy risks are evaluated according to the model produced rather than the method employed. Two broad groups are defined, depending on whether data points from the training set are stored within the model or not.
 
-In the second category, where models do not embed data, techniques are grouped depending on privacy risk they pose at the output check time. So it is about the type of output produced. Specifically the key question is whether models are designed to predict:
+The first group are considered as high risk in terms of privacy leakage as the output model contains embedded data. Include Instance-based (some refers to them as *lazy learners*) and Foundation Models (also known as *encoder-decoder* architecture models). While Instance-based methods explicitly include data, Foundation Models contain pre-processed data, and are typically designed so that they can subsequently be rapidly repurposed for a range of related classification or regression tasks.
 
-- numerical values (*regression models*)
-- class probabilities (*classification*)
-- semi-structured outputs (e.g. segmented images)
-- unstructured outputs (e.g free text responses)
+The second group, where models do not embed data, techniques are grouped depending on the type of privacy risk they pose at the output check time. The key question is whether models are designed to predict:
+
+- *Numerical values:* when the model predict measurable numbers in real-world quantities, such as height, weight or temperature (regression models)
+- *Class probabilities:* these are numbers between 0 and 1 (or 0% to 100%) representing how confident the model is that something belongs to a specific category. For example, '60% chance of rain today' or '70% cat, 30% dog'. (classification)
+- *Semi-structured outputs:* those predictions are more flexible than the previous type, it's organised but not fixed. It can be a combination of labels, text, lists, etc. (e.g. segmented images)
+- *Unstructured outputs:* when the output does not have a predefined format or structure, like raw text, images, audio, etc.(e.g free text responses)
 
 > [!NOTE]
 > *It is important to note that almost all Machine Learning Algorithms can be trained to create classification or regression models.*
@@ -103,8 +107,8 @@ In the second category, where models do not embed data, techniques are grouped d
   Some models work on the basis on having as part of the model a carefully selected amount of records included to be able to make predictions. In fact this is how the so called "Lazy learners" or "instance-based" models work.\
   Other type of larger models like deep learning, it is possible to retrieve information about the training data under certain circumstances.\
   Foundation models are pre-trained in vast amounts of data, which is embedded, and posteriorly are retrained for specific purposes.
-- Small-group reporting ( which can enable Re-identification / Attribute Inference):\
-  *brief description*
+- Small-group reporting (which can enable Re-identification / Attribute Inference):\
+  Some individuals data that belong to a specific group or category, where only a few individuals are present, could be easily identifiable. This can lead to re-identification, specially if some characteristics of the group are already known. For example patients in a specific NHS board that suffer from a rare genetic disease.
 - Class Disclosure:\
   It occurs when information of a distinct population group is reveled, often inadvertently. For instance, when either none or all of the observations in a given category come from that subpopulation.
 - Privacy or Reconstruction attacks:\
@@ -115,21 +119,11 @@ In the second category, where models do not embed data, techniques are grouped d
     For this type of attack, some information of a record belonging to a person is known and consists of finding out the rest of items of the record. Some information belonging to some people, e.g. famous, can be publicly available.
   - Model Inversion:\
     The goal is to recover a subset or group of records that have something in common (belong a specific sub-class), that is disclosing records belonging to several people at a time. For example, all the people who suffer from a distinct rare disease used in the training data.
-
+- Model can be triggered to regurgitate *implicitly* stored training data:\
+  Sometimes models can repeat precisely part of the data that they have been trained on, even if it wasn't supposed to copy. This can happen when a model memorised the patterns on the data so well that it can reproduce part of it without explicitly storing it.
 
 > [!NOTE]
 > *The input data is the data after pre-processing that is used to train the model. It is not necessarily the raw data provided by the TRE to the user or researcher.*
-
-  #### NEED TO THINK IF EXPAND RISKS INCLUDED
-
-  - *Property Inference:*\
-    *Ability to extract properties about the training data that not directly included in the ML model, and that the model unintentionally learned. For example, a NN performing gender classification but can be used to find out people who wears glasses.*
-  - Linkage attack\
-  - Intersection attacks\
-  - Evasion attacks\
-  - Poisoning attacks\
-- Model can be triggered to regurgitate *implicitly* stored training data\
-  *brief description*
 
 <div style="height:10px;background:black;width:400"></div>
 
@@ -146,9 +140,12 @@ This category are models that considered to privacy leakage extreme or very high
 <!--## $${\text{\color{blue}Group\ 1:\ Lazy Learners or Instance-Based\ Models.}}$$-->
 ### Group A.1. Instance-based or lazy learners
 
-This type of algorithms are simple and easy to implement and still widely adopted. They classify or make predictions based on proximity to a group data points known as nearest neighbors (NN). The so called NN are data points are explicitly store or embedded within the model during the training phase. They are essential for them to work.
+This type of algorithm is simple, easy to implement, and still widely used in practice. It makes classifications or predictions based on the proximity to a group of data points known as nearest neighbors (NN).
 
-The best knowm example is 1-Nearest Neighbour which effectively says *"What's the closest thing I've seen already?"*
+These nearest neighbors are either explicitly stored or embedded within the model during training. They are essential to how the model functions, as predictions rely on comparing new inputs to these known reference points.
+
+The most well-known example is 1-Nearest Neighbor, which essentially asks:
+*“What’s the closest thing I’ve seen before?”*
 
 #### Examples of Instance-Based Models
 
@@ -191,11 +188,13 @@ All  risks below apply and should also be checked for - although the primary mit
 <!--## $${\text{\color{blue}Group6:\ Foundation\ models}}$$-->
 ### Group A.2. Foundation Models
 
-These type of models are pre-trained on vast amounts of general data from a given domain (often unlabelled, almost always sequence-structured), and then are fine-tuned, adapted or carefully engineered for specific applications. They are adaptable and proving, in many cases, more efficient than a single model for the use-case. With only a few foundation models, trained on a very limited number of datasets, the applications are vast. However, it poses a monopolistic power structure problem.
+These types of models—often called foundation models, that are pre-trained on massive amounts of general-domain data, which is typically unlabeled and sequence-structured (e.g. text, code, or time series). After pre-training, they are fine-tuned, adapted, or engineered for specific applications. Their adaptability makes them, in many cases, more efficient and versatile than building separate models for individual tasks.
+
+With just a few powerful foundation models, trained on a limited number of datasets, a wide range of applications becomes possible. However, this also introduces concentration of power, raising concerns about monopolistic control over foundational AI infrastructure.
 
 The goal is learn a useful 'embedding' (effectively a preprocessing that maps high-dimensional data onto  to a smaller set of features) that captures all of the important information within a sequence. This storing forms the bridge between the *encoder* (learned preprocessing) and the *decoder* which transforms the encoded inputs back into a form suitable for a task.
 
-They are based on deep neural networks and transfer learning. Which are well stablish method in the AI world. The main difference lie on being trained on extreme large amounts of data. Therefore the ability to be transferred across domains.
+These models rely on deep neural networks and transfer learning, both of which are well-established in the AI field. The key difference is their scale: they are trained on extremely large datasets, enabling them to generalize across tasks and domains far more effectively than traditional models.
 
 #### Examples
 
@@ -266,12 +265,13 @@ This category are lower privacy risk type of ML models. Data is not stored, howe
 <!--## $${\text{\color{blue}Group\ 2:\ Regression\ Models}}$$-->
 ### Group B.1. Regression models
 
-Regression models predict a continuous numerical values based on one or more features or predictor variables.
+Regression models are used to predict continuous numerical values based on one or more features or predictor variables.
 
-These are models that have been trained to make a numerical prediction - in which we do not include probability of some event or class occurring.  
-Examples from different domains include: air pollutant levels, risk of re-offending, duration of hospital stay, drug response analysis, etc.
+These models are specifically trained to generate numerical predictions - without estimating the probability of an event or class. Instead of saying how likely something is, they predict how much or how long.
 
-In general the risks for this group are the same as for well understood Linear/Logistic/Logit Regression.
+Examples from different domains include: estimating air pollutant levels, predict risk of re-offending, forecasting duration of hospital stay, analysing drug response in patients, etc.
+
+In general, the risks and limitations associated with regression models are similar to those found in linear,logistic, or logit Regression, which are well-established in both research and applied settings.
 
 #### Examples of Regression Models
 
@@ -340,7 +340,9 @@ Classification models can be created with most Machine Learning Algorithms
 <!--## $${\text{\color{blue}Group\ 4:\ Models\ producing\ semi-structured\ outputs}}$$-->
 ### Group B.3. Models producing semi-structured outputs
 
-*brief description to follow*
+These ML models generate outputs that are somewhat organised, but not as rigid as structured data like tables, yet more organised than free-form text. The output is generally flexible format like lists, or pairs of key-values. The main advantage is their adaptability.
+
+They produce a multi-field response. For example labelling specific areas of an image, telling us what is where, or extracting facts such as names and dates from documents.
 
 #### Examples
 
@@ -359,7 +361,7 @@ Classification models can be created with most Machine Learning Algorithms
 <!--## $${\text{\color{blue}Group5:\ Models\ producing\ unstructured\ outputs (e.g.\ Natural\ Language).}}$$-->
 ### Group B.4. Models producing unstructured outputs
 
-*brief description to follow*
+This type refers to the models that generate outputs that have no predefined structure. The information is not categories and generally requires of interpretation.
 
 #### Examples
 
@@ -452,6 +454,16 @@ Risk classification:
 | Release  |  - MQC system<br/> - User and result register<br/>|   |   | - Model owner |
 
 </div>
+
+
+## Risk evaluation and overall risk score
+
+Risk for the purpose of disclosure control has two components: the likelihood an event happening, and the impact it has when it happens. The likelihood 
+
+The risk score is calculated by adding all the impact events risks levels multiplied by the likelihood of the event happening. The score should account for all the mitigation measures taken, which should be reflected either as likelihood or impact.
+
+The scrutiny of disclosure control should be based upon the risk score and others residual risks after applying the relevant mitigation strategies. However, some types of models will still require specific solutions for disclosure control.
+
 
 #### References
 
