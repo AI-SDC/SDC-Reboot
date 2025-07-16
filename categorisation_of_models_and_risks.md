@@ -21,7 +21,7 @@ This document aims to capture the types of privacy risks and mitigations associa
 
 The objective is to produce a taxonomy of risks with their corresponding mitigation strategies. When a TRE is faced with a new ML project proposal, where the model will be released from the TRE, there are a small number of options to consider. TREs should have in place risks assessments and mitigations flows accordingly.
 
-![ML risks and mitigation strategies during the life cycle of a project.](images/AI-ML-Risks-Mitigations-diagram.png)*Each type of ML has a set of risks associated. The right mitigation strategies can be applied at the appropriate stage of the life cycle of a project.*
+![ML risks and mitigation strategies during the life cycle of a project.](images/typeAI-risk-mitigations-diagram.png)*Each type of ML has a set of risks-mitigations associated.*
 
 ### How to navigate and use this document
 
@@ -265,9 +265,7 @@ This category are lower privacy risk type of ML models. Data is not stored, howe
 <!--## $${\text{\color{blue}Group\ 2:\ Regression\ Models}}$$-->
 ### Group B.1. Regression models
 
-Regression models are used to predict continuous numerical values based on one or more features or predictor variables.
-
-These models are specifically trained to generate numerical predictions - without estimating the probability of an event or class. Instead of saying how likely something is, they predict how much or how long.
+Regression models are designed to predict a number out of range (continuous variable), which is based on the data provided to train the model. Instead of saying how likely something is, they predict how much or how long.
 
 Examples from different domains include: estimating air pollutant levels, predict risk of re-offending, forecasting duration of hospital stay, analysing drug response in patients, etc.
 
@@ -304,7 +302,7 @@ Some models may implicitly or explicitly perform *piece-wise regression* in  whi
 
 - for classification models these  check for residual degrees of freedom, class disclosure and k-anonymity
 - a  small amount of work is needed  to adapt to regression models.
-- prioritisaion to be decided by the community
+- prioritisation to be decided by the community
 - These are relatively cheap to run as they do not involve training any new models.
 
 2. Model Query Controls
@@ -316,9 +314,9 @@ Some models may implicitly or explicitly perform *piece-wise regression* in  whi
 <!--## $${\text{\color{blue}Group\ 3:\ Classification\ Models}}$$-->
 ### Group B.2. Classification Models.
 
-These models are designed to predict the probability that a record is associated with different output classes. For example, a model that can predict the probability (or risk) that a patient may suffer from cancer. Another example would be a model capable to predict if a given image contain similar types of vehicles like a car, a van, a bicycle, a motorbike, a lorry etc and it shows for each type of vehicle how likely it is the image contains them.
+These models are designed to assign a new given entry or data point to a one of the predefined set of categories, which can contain 2 or more options. 
 
-This could be a single value *P(voting in next election)* or the likelihoods associated with a finite set of classes e.g. *P(votes for party X)* or linking genetic/health records to different disease diagnoses.
+Unlike the regression models, which predict a number out of a continuous range, classification is categorical, meaning that there is a choices of specified items. It enables informed decision-making. For example, it can be used as spam filter, or to predict if a given image contain similar types of vehicles like a car, a van, a bicycle, a motorbike, a lorry etc and it shows for each type of vehicle. It can also be used to predict election voting or linking genetic/health records to different disease diagnoses. The output of these models often have a probability associated for each item, for instance a model that can predict the probability (or risk) that a patient may suffer from cancer.
 
 > [!IMPORTANT]
 > *Note that in traditional type of ML classification methods include KNN or SVMs, however, since these methods embed data, for the purpose of disclosure control such methods are excluded from this category.*
@@ -340,13 +338,16 @@ Classification models can be created with most Machine Learning Algorithms
 <!--## $${\text{\color{blue}Group\ 4:\ Models\ producing\ semi-structured\ outputs}}$$-->
 ### Group B.3. Models producing semi-structured outputs
 
-These ML models generate outputs that are somewhat organised, but not as rigid as structured data like tables, yet more organised than free-form text. The output is generally flexible format like lists, or pairs of key-values. The main advantage is their adaptability.
+These ML models generate outputs that are somewhat organised, but not as rigid as structured data like tables, yet more organised than free-form text. They produce a multi-field response.The output is generally flexible format like lists, or pairs of key-values, JSON, decision trees, ranked lists, sequence of labels and probability distributions. The main advantage is their adaptability. It is often used on data that doesn't have group labels (e.g. patients vs. controls, or dogs vs. cats). Instead, the algorithm identifies groups based on similarity measures.
 
-They produce a multi-field response. For example labelling specific areas of an image, telling us what is where, or extracting facts such as names and dates from documents.
+For example labelling specific areas of an image, telling us what is where, or extracting facts such as names and dates from documents. And it is machine readable. They have the potential to reveal hidden patterns, novel structures or new relationships. Human bias can be reduced and grouping is based on data structure rather than assumed or predefined categories.
+
+This type of models may be used as input for other type of more structured ML.
 
 #### Examples
 
-- Vision-based  models that automatically segment "regions of interest" in an image.
+- Vision-based models that automatically segment "regions of interest" in an image.
+- In healthcare, it can be used to predict care outcomes, mortality risk or occurrence of complications.
   
 #### Risks  and Mitigations
 
@@ -361,14 +362,20 @@ They produce a multi-field response. For example labelling specific areas of an 
 <!--## $${\text{\color{blue}Group5:\ Models\ producing\ unstructured\ outputs (e.g.\ Natural\ Language).}}$$-->
 ### Group B.4. Models producing unstructured outputs
 
-This type refers to the models that generate outputs that have no predefined structure. The information is not categories and generally requires of interpretation.
+This type refers to the models that generate outputs that have no predefined structure. The information is not categorised, generally requires of interpretation and is not machine readable. It includes generative AI like Variational Autoencoders (VAEs), Generative Adversarial Networks (GANs), Diffusion Models and Transformers.
+
+The output is produced from patterns learned from the data during the training phase. In some cases the output produced may be repetitive or limited variations, especially when the original data is not diverse enough. Examples of outputs include answers to questions, generate free text, images, videos and music.
 
 #### Examples
 
 - Models that  produce summaries of inputs (could be text or images)
 - Chatbots
 - **Foresight**
--
+- Creation of music
+- Generation of images
+- Synthetic data generation
+- Generation of code and algorithms
+- Generate 3D molecular structure
 
 #### Risks  and Mitigations
 
@@ -386,11 +393,15 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 <div style="height:10px;background:black;width:400"></div>
 
-Note: Groups 4 and 5 are both forms of generative AI
+> [!NOTE]
+> *Groups B.3 and B.4 are both forms of generative AI.*
 
 #### References
 
 Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221–231 (2024). <https://doi.org/10.1007/s12599-024-00851-0>
+K. Sun, A. Roy, and J. M. Tobin, “Artificial intelligence and machine learning: Definition of terms and current concepts in critical care research,” J. Crit. Care, vol. 82, no. July 2023, p. 154792, 2024. <https://www.sciencedirect.com/science/article/pii/S088394412400279X>
+A. Bandi, P. V. S. R. Adapa, and Y. E. V. P. K. Kuchi, “The Power of Generative AI: A Review of Requirements, Models, Input–Output Formats, Evaluation Metrics, and Challenges,” Futur. Internet, vol. 15, no. 8, 2023. <https://www.mdpi.com/1999-5903/15/8/260>
+
 
 <https://dl.acm.org/doi/full/10.1145/3624010>
 
