@@ -422,14 +422,14 @@ A. Bandi, P. V. S. R. Adapa, and Y. E. V. P. K. Kuchi, “The Power of Generativ
 
 <div class="heatMap">
 
-| Category | Type of model | Risk | Event likelihood | Severity | Mitigation | Stage | Residual risks | Adversarial attacks required | Computational cost |
-| --- | --- | --- | --- | --- | --- | --- | --- |--- | --- |
-| Stored data | Instance-based | - Data included in the model |🔴|🟥| - Do not release of the TRE <br>- Anonymise data <br/> - Use synthetic data instead<br/> - Remove vectors where possible<br/> - Deploy to MQC system | - Design<br/> - Governance<br/> - Development<br/> - Release| - Small group reporting 🔴🟨 <br> - Class disclosure 🔴🟨 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
-| Store data | Foundation models | - Data included in the model <br/> - Small group reporting <br/> - Class Disclosure  <br/> - Attribute Inference for known members |🔴 <br> 🟡<br/> 🟡<br/> 🟢<br>|🟨 <br>🟩<br>🟩<br>🟥<br>| - Do not release of the TRE <br> - Import a pre-trained model, change'head' and train for a new application without affecting the rest of the foundation model.<br/> - Import a pre-trained model, change head, then adapt the head and the 'body' of foundation model weights.<br/> - Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
-| Do not store data | Regression models | - Small group reporting <br/> - Class disclosure  |🟢<br>🟢|🟨<br>🟨| - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢🟨| &#x2191;&#x2191;|
-| Do not store data | Classification models | - Small group reporting  <br/> - Class Disclosure  <br/> | 🟢<br>🟢|🟨<br>🟨| |  |  | Required always 🟢🟨| &#x2191;&#x2191;|
-| Do not store data | Models producing semi-structured outputs |  - Small group reporting  <br/> - Class Disclosure  | 🟢<br>🟢 |🟨 <br>🟨||  |  | Required always 🟢🟨| &#x2191;&#x2191;&#x2191;|
-| Do not store data | Models producing unstructured outputs |  - Regurgitate implicitly stored training data  <br/> - Small group reporting  <br/> - Class Disclosure   |🟡<br>🟢<br>🟢 |🟥<br>🟨<br>🟨|- Do not release of the TRE <br>- Anonymise the text<br/> - Deploy to MQC system | - Design <br/> - Development | - Some forms of personal data might still be present  | Not possible at the moment(?) | &#x2191;&#x2191;&#x2191;&#x2191;|
+| Category | Type of model | Risk | Event likelihood |  Mitigation | Stage | Residual risks | Adversarial attacks required | Computational cost |
+| --- |  --- | --- | --- | --- | --- | --- |--- | --- |
+| A: Stored data | A.1. Instance-based | - Data included in the model |🔴| - Do not release of the TRE <br>- Anonymise data <br/> - Use synthetic data instead<br/> - Remove vectors where possible<br/> - Deploy to MQC system | - Design<br/> - Governance<br/> - Development<br/> - Release| - Small group reporting 🔴 <br> - Class disclosure 🔴 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
+| A: Store data | A.2. Foundation models | - Data included in the model <br/> - Small group reporting <br/> - Class Disclosure  <br/> - Attribute Inference for known members |🔴 <br> 🟡<br/> 🟡<br/> 🟢<br>|- Do not release of the TRE <br> - Import a pre-trained model, change'head' and train for a new application without affecting the rest of the foundation model.<br/> - Import a pre-trained model, change head, then adapt the head and the 'body' of foundation model weights.<br/> - Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+| B: Do not store data | B.1. Regression models | - Small group reporting <br/> - Class disclosure  |🟢<br>🟢| - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢| &#x2191;&#x2191;|
+| B: Do not store data | B.2. Classification models | - Small group reporting  <br/> - Class Disclosure  <br/> | 🟢<br>🟢| |  |  | Required always 🟢| &#x2191;&#x2191;|
+| B: Do not store data | B.3. Models producing semi-structured outputs |  - Small group reporting  <br/> - Class Disclosure  | 🟢<br>🟢 ||  |  | Required always 🟢| &#x2191;&#x2191;&#x2191;&#x2191;|
+| B: Do not store data | B.4 Models producing unstructured outputs |  - Regurgitate implicitly stored training data  <br/> - Small group reporting  <br/> - Class Disclosure   |🟡<br>🟢<br>🟢 |- Do not release of the TRE <br>- Anonymise the text<br/> - Deploy to MQC system | - Design <br/> - Development | - Some forms of personal data might still be present  | Not possible at the moment(?) | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
 
 </div>
 
@@ -439,12 +439,6 @@ A. Bandi, P. V. S. R. Adapa, and Y. E. V. P. K. Kuchi, “The Power of Generativ
 🟢 Low or very low<br/>
 🟡 Medium<br/>
 🔴 High<br/>
-
-*Severity/Consequences/Impact*<br/>
-🟩 Low<br/>
-🟨 Medium<br/>
-🟥 Catastrophic<br/>
-
 
 Risk classification:
 
