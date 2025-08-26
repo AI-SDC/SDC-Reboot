@@ -46,9 +46,12 @@ This recommendations in this guide are additional to those normally employed for
 
 ## Categorisation
 
+---
+
 <div style="color:black;background:green"><h3>Propose to update this to include a class <em>Models that predict the next events(s) in a sequence.</em></h3>
   <p><b>i.e.   transformers (and vision transformers) - hence most generative AI - but also recurrent networks</b></p>
 </div>
+--- 
 
 Traditionally ML is classified depending on the type of learning as supervised, unsupervised or cluster analysis, semi-supervised, dimensionality reduction, reinforcement learning and deep learning. With the continuous appearance of new methods, such as the foundation models, the classification system is subject to change and discrepancies. Such categorisation do not take into account which type of model the method produce, which is key to determine the appropriate Disclosure Control (DC) measures.
 
