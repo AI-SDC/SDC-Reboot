@@ -66,21 +66,55 @@ A categorisation system capturing the architecture of the models produced specif
 }%%
 flowchart LR
     ml(Machine Learning types by output produced)
-    subgraph a["**Store data**"]
+    subgraph a["**Explicitly Store data**"]
       a1(Instance based)
-      a2(Foundation models)
     end
-    subgraph b["**Do not store data**"]
+    subgraph b["**May implicitly store data**"]
       b1(Regression models)
       b2(Classification models)
       b3(Models producing semi-structured outputs)
       b4(Models producing unstructured outputs)
+      b5(Foundation models)
     end
     ml==>a
     ml==>b
 
 ```
 
+
+Alternative version
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#000080',
+      'primaryTextColor': '#fff',
+      'primaryBorderColor': '#808080',
+      'lineColor': '#000000',
+      'secondaryColor': '#7fb3d5',
+      'tertiaryColor': '#a9cce3'
+    }
+  }
+}%%
+flowchart TB
+    ml(Machine Learning types by nature of predictions produced)
+    %%subgraph a["**Nature of Predictions**"]
+      a1(Predictions made on the basis of explicitly stored data)
+      a2(Numerical values - Regression models)
+      a3(Categorical values - Classification models)
+      a4(Semi-structured outputs e.g., segmentedimages)
+      a5(Next values in a sequence)
+    %%end
+    ml==>a1
+    ml==>a2
+    ml==>a3
+    ml==>a4
+    ml==>a5
+
+
+```
 ML models privacy risks are evaluated according to the model produced rather than the method employed. Two broad groups are defined, depending on whether data points from the training set are stored within the model or not.
 
 The first group are considered as high risk in terms of privacy leakage as the output model contains embedded data. Include Instance-based (some refers to them as *lazy learners*) and Foundation Models (also known as *encoder-decoder* architecture models). While Instance-based methods explicitly include data, Foundation Models contain pre-processed data, and are typically designed so that they can subsequently be rapidly repurposed for a range of related classification or regression tasks.
