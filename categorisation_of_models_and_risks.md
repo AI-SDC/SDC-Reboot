@@ -126,21 +126,21 @@ Arguments supporting this will usually rely on the pre-processing applied:
 The next set of risk have direct counterparts in the disclosure control of `traditional` outputs.
 ## 3.2 Small-group reporting: <a name="small-group"></a>
   Some individual's data that belong to a specific group or category, where only a few individuals are present, could be easily identifiable. This can lead to re-identification, specially if some characteristics of the group are already known. For example patients in a specific NHS board that suffer from a rare genetic disease.
-## 3.3 Class Disclosure: <a name='class-disclosure"></a>
+## 3.3 Class Disclosure: <a name="class-disclosure"></a>
   Class disclosure risk occurs when information of a distinct population group is reveled, often inadvertently. For instance, when either none or all of the observations in a given category come from that subpopulation.
 
 The  third set of risks, sometimes referred to in the ML literature *Privacy attacks* or *Reconstruction attacks* recreate one or more record from the data used to train the ML model, either partially or fully.
 ## 3.4 Membership Inference Attack (MIA): <a name="mia"></a>
-    The objective of this type of attack is to determine whether a specific record or data belonging to a person was part of the dataset used to train the machine learning.
+The objective of this type of attack is to determine whether a specific record or data belonging to a person was part of the dataset used to train the machine learning.
 
 ## 3.5 Attribute Inference Attack (AIA): <a name="aia"></a>
-    Usuaully applied to known members,when  some information of a record belonging to a person is known, this attack aims to find out the rest of items of the record. Some information belonging to some people, e.g. famous, can be publicly available.
+Usually applied to known members,when  some information of a record belonging to a person is known, this attack aims to find out the rest of items of the record. Some information belonging to some people, e.g. famous, can be publicly available.
 
 ## 3.6 Model Inversion: <a name="model-inversion"></a>
-    The goal is to recover a subset or group of records that have something in common (belong a specific sub-class), that is disclosing records belonging to several people at a time. For example, all the people who suffer from a distinct rare disease used in the training data.
+The goal is to recover a subset or group of records that have something in common (belong a specific sub-class), that is disclosing records belonging to several people at a time. For example, all the people who suffer from a distinct rare disease used in the training data.
 
-## 3.7 Jailbreaking (triggering model to regurgitate *implicitly* stored data) <a name="regurgitate"></aN
-  Sometimes models can repeat precisely part of the data that they have been trained on, even if it wasn't supposed to copy. This can happen when a model memorised the patterns on the data so well that it can reproduce part of it without explicitly storing it.
+## 3.7 Jailbreaking (triggering model to regurgitate *implicitly* stored data) <a name="regurgitate"></a>
+Sometimes models can repeat precisely part of the data that they have been trained on, even if it wasn't supposed to copy. This can happen when a model memorised the patterns on the data so well that it can reproduce part of it without explicitly storing it.
 
 
 ---
