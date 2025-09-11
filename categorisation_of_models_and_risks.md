@@ -307,7 +307,7 @@ This category includes:
 
 
 
-
+<!--
 
 > [!NOTE]
 > *It is important to note that almost all Machine Learning Algorithms can be trained to create classification or regression models.*
@@ -325,7 +325,7 @@ This category includes:
 > - ingressing a pre-trained Foundation model, adding a new head for a specific task, but allowing the learning algorithm to change all of the parameters during adaptation. This is also effectively a category B problem.
 > - ingressing a pre-trained Foundatiom model, adding a new head, but then 'freezing' the body and only changing the parameters of the new head during adaptation.  In this case only the new head needs to be exported and risk assessed. This is a category C problem 
 
-
+-->
 
 
 
@@ -352,36 +352,15 @@ After pre-training, they are fine-tuned, adapted, or engineered for specific app
 With just a few powerful foundation models, trained on a limited number of datasets, a wide range of applications becomes possible. However, this also introduces concentration of power, raising concerns about monopolistic control over foundational AI infrastructure.
 
 
-
-
-
 **Examples**
 
-Some examples of foundational models are:
-
-- Large Language Models:
-  - Open AI's GPT-Series
-  - OpenLLaMa
-  - BERT
-- Vision models:
-  - CLIP
-  - RETFound
-- Genome sequence models
-   - MuAt
-  
-The application specific fine-tuned models are mostly in the field of natural language processing (NLP), and well known examples include:
-
-- ChatGPT
-- DeepSeek
-- Gemini
-- Grok
-- DALL-E
+Some examples of foundational models are *Large Language Models* (such as  Open's GPT-series, OpenLLaMa and BERT), *Vision Transformers* (such as CLIP and RetFound),as MuAt).  
+Application specific fine-tuned models are mostly in the field of natural language processing (NLP), and well known examples include:
+ChatGPT, DeepSeek, Gemini, and Grok.
 
 **Considerations at project inception**
 
-
-
-Subsequently they can be retrained for a specific tasks using smaller amounts of unlabelled data. Often this is done by only removing the 'head" (the final layer(s) of the *decoder*)  and replacing it with one suited to the new task (e.g. *N* output nodes for a classification problem with *N* different labels)
+Pre-trained founda models can be subsequently they can be retrained for a specific tasks using smaller amounts of labelled data. Often this is done by only removing the 'head" (the final layer(s) of the *decoder*)  and replacing it with one suited to the new task (e.g. *N* output nodes for a classification problem with *N* different labels)
 
 When a project wants to use a foundation model it is vital from project inception to  be clear whether researchers want to:
 
@@ -405,8 +384,10 @@ In both these last two cases the full model needs to be evaluated for risks incl
     - it  **may** be possible for scenario 2, depending on the size of the training data and however many `epochs' (iterations) of training were used.
     - is **highly unlikely** to be feasible for scenario 3 (training a foundation model from scratch).
 
-
-
+<div style="background:lightpink;color:black">
+<p><b>Note that</b> a recent <a href="https://grants.nih.gov/grants/guide/notice-files/NOT-OD-25-081.html">US NIH Directive</a>] states that  Generative AI trained of fine-tuned on confidential data should be treated as data derivatives and not released.   </p>
+<p>Therefore In scenarios 2 and 3 we would currently only recommend mitigation  via ‘model query controls’ (i.e. not releasing)</p>
+</div>
 
 ## 4.3 Category C: Predictions for each input made independently <a name="indepedent"></a>
 
@@ -516,10 +497,6 @@ This type of models may be used as input for other type of more structured ML.
 
 
 
-
-
-<!--<div style="height:10px;background:black;width:400"></div>-->
-
 ---
 
 
@@ -528,8 +505,6 @@ This type of models may be used as input for other type of more structured ML.
 
 <!--## $${\text{\color{blue}Group5:\ Models\ producing\ unstructured\ outputs (e.g.\ Natural\ Language).}}$$-->
 
-
-<div style="color:black;background:lightgreen"><h3>Merge the (commented out) text below into category A</h3></div>
 
 <!---
 
@@ -567,11 +542,10 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 --->
 
-<div style="height:10px;background:black;width:400"></div>
 
 --- 
 
-#### References
+# References
 
 - Schneider, J., Meske, C. & Kuss, P. Foundation Models. Bus Inf Syst Eng 66, 221–231 (2024). <https://doi.org/10.1007/s12599-024-00851-0>
 - K. Sun, A. Roy, and J. M. Tobin, “Artificial intelligence and machine learning: Definition of terms and current concepts in critical care research,” J. Crit. Care, vol. 82, no. July 2023, p. 154792, 2024. <https://www.sciencedirect.com/science/article/pii/S088394412400279X>
@@ -580,7 +554,7 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 <https://dl.acm.org/doi/full/10.1145/3624010>
 
-<div style="color:black;background:lightgreen"><h3>Update table below if we a gree on new categories</h3></div>
+<div style="color:black;background:lightgreen"><h3>Update table below if we agree on new categories</h3></div>
 
 ### $${\text{\color{blue}Summary table}}$$
 
