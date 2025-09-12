@@ -23,10 +23,11 @@
    1. [Extraction of explicitly stored data](#explicit)
    2. [Small group reporting](#small-group)
    3. [Class Disclosure](#class-disclosure)
-   4. [Membership inference](#mia)
-   5. [Attribute Inference](#aia)
-   6. [Model Inversion](#model-inversion)
-   7. [Jailbreaking](#regurgitation) 
+   4. [Low Residual Degrees of Freedom](#DoF)
+   5. [Membership inference](#mia)
+   6. [Attribute Inference](#aia)
+   7. [Model Inversion](#model-inversion)
+   8. [Jailbreaking](#regurgitation) 
 4. [Categories of models according to type of prediction](#categories)
    1. [Category A: Predictions based om comparisons to stored data](#instance)
    2. [Category B. Models trained on sequence-based tasks](#sequence)
@@ -121,25 +122,33 @@ In this case an external attacker can directly extract some of the training data
 The only mitigation for this risk is that the TRE would be content to release the training data as provided to the model.
 Arguments supporting this will usually rely on the pre-processing applied:
     - it might be so complex that data effectively becomes *k-anonymous*  
-    - it might apply a Differentially Private transformation (n which case the $\eta\$ parameter needs to be agreed.
+    - it might apply a Differentially Private transformation (in which case the $\epsilon\$ parameter needs to be agreed).
 
-The next set of risk have direct counterparts in the disclosure control of `traditional` outputs.
+---
+
+The next set of risks have direct counterparts in the disclosure control of "traditional" statistical outputs.
+
 ## 3.2 Small-group reporting: <a name="small-group"></a>
   Some individual's data that belong to a specific group or category, where only a few individuals are present, could be easily identifiable. This can lead to re-identification, specially if some characteristics of the group are already known. For example patients in a specific NHS board that suffer from a rare genetic disease.
 ## 3.3 Class Disclosure: <a name="class-disclosure"></a>
   Class disclosure risk occurs when information of a distinct population group is reveled, often inadvertently. For instance, when either none or all of the observations in a given category come from that subpopulation.
+## 3.4 Low Residual Degrees of Freedom: <a name="DoF"></a>
+If a regression model becomes "saturated" (considers all combinations of variables) it esentially becomes a (complex) look-up function.  The usual test is that the *residual degrees of freedom* (the number of training records minus the number of trainable parameters) is above some threshold (typically 10).
+
+---
 
 The  third set of risks, sometimes referred to in the ML literature *Privacy attacks* or *Reconstruction attacks* recreate one or more record from the data used to train the ML model, either partially or fully.
-## 3.4 Membership Inference Attack (MIA): <a name="mia"></a>
+
+## 3.5 Membership Inference Attack (MIA): <a name="mia"></a>
 The objective of this type of attack is to determine whether a specific record or data belonging to a person was part of the dataset used to train the machine learning.
 
-## 3.5 Attribute Inference Attack (AIA): <a name="aia"></a>
+## 3.6 Attribute Inference Attack (AIA): <a name="aia"></a>
 Usually applied to known members,when  some information of a record belonging to a person is known, this attack aims to find out the rest of items of the record. Some information belonging to some people, e.g. famous, can be publicly available.
 
-## 3.6 Model Inversion: <a name="model-inversion"></a>
+## 3.7 Model Inversion: <a name="model-inversion"></a>
 The goal is to recover a subset or group of records that have something in common (belong a specific sub-class), that is disclosing records belonging to several people at a time. For example, all the people who suffer from a distinct rare disease used in the training data.
 
-## 3.7 Jailbreaking (triggering model to regurgitate *implicitly* stored data) <a name="regurgitate"></a>
+## 3.8 Jailbreaking (triggering model to regurgitate *implicitly* stored data) <a name="regurgitate"></a>
 Sometimes models can repeat precisely part of the data that they have been trained on, even if it wasn't supposed to copy. This can happen when a model memorised the patterns on the data so well that it can reproduce part of it without explicitly storing it.
 
 
@@ -285,29 +294,20 @@ This category includes:
  -  *Instance-based* (some refers to them as *lazy learners*)  
    This type of algorithm is simple, easy to implement, and still widely used in practice.  
    Predictions for a new record exploit proximity to a subset of data explicitly stored or embedded within the model during training.  
-   The most well-known example is 1-Nearest Neighbor, which essentially asks:   *“What’s label on the closest thing I’ve seen before?”*.  
-   Other examples include:
-    - k-Nearest Neighbours (KNN).
-    - Case-based reasoning.
-    - Self Organising Map (SOM).
-     - Learning Vector Quantization (LVQ).
-     - Locally Weighted Learning (LWL).
-       
+    - The most well-known example is 1-Nearest Neighbor, which essentially asks:   *“What’s label on the closest thing I’ve seen before?”*.
+    - Other examples (and their common acronyms) include: k-Nearest Neighbours (KNN); Case-based reasoning (CBR); Self Organising Maps (SOM); Learning Vector       Quantization (LVQ) and Locally Weighted Learning (LWL).
+
  -  *Kernel Models*  transform input records into a space defined by stored 'kernels', where the prediction task is easier.  
-   These kernels are usually usual defined via stored members of the training set.  
-   Examples include:
-    - Support Vector Classifiers
-    - Support Vector Regressors.
-    - Radial Basis Function Networks.
+   These kernels are usually usual defined via stored members of the training set.
+    - Examples include: Radial Basis Function Networks (RBFN) and Support Vector Machines  such as Support Vector Classifiers and  Support Vector Regressors.
 
-
-> [!TIP]
-> *Check the model file size. Models that contain data are often large or very large.*
 
 
 
 
 <!--
+> [!TIP]
+> *Check the model file size. Models that contain data are often large or very large.*
 
 > [!NOTE]
 > *It is important to note that almost all Machine Learning Algorithms can be trained to create classification or regression models.*
@@ -331,40 +331,33 @@ This category includes:
 
 ## 4.2 Category B. Models trained on sequence-based tasks <a name='sequence'></a>
 Models in **_Category B_** are also considered high risk as they frequently *implicitly* contain embedded data, that can be hard to test for.  
-This is because they typically have:
-- millions (or trillions) of trainable parameters - so have the capacity to simply memorize, rather than generalise from, "unusual" training data
-- complex architectures that can represent, and be triggered by, certain sequences of events
-- trained on sequences of tokens, which could be, for example,  words, patches of images, parts of a video, or genotype base-pairs
+This is because they typically:
+- Have millions (or trillions) of trainable parameters - so have the capacity to simply memorize, rather than generalise from, "unusual" training data
+- Use complex architectures that can represent, and be triggered by, certain sequences of events
+- Are trained on sequences of tokens, which could be, for example,  words, patches of images, parts of a video, or genotype base-pairs.  
   This means that the potential output space suffers from *Combinatorial explosion*, so models are typically *sparse*.
 
-Most *Generative AI* falls into this category, and you might also see names like  *Foundation Models* (also known as  models), *Large Language Models* and *Vision-Based Transformers*.   
-You will often see these associated with terms such as *encoder-decoder*  and *Transformers*.   
+ This category includes most *Generative AI*. You might also see names like  *Foundation Models*, *Large Language Models* and *Vision-Based Transformers*.   
+You may also see these associated with terms such as *encoder-decoder*  and *Transformers*.   
 Less frequently nowadays, you might also see names like *Recurrent Neural Network* and *LSTM* network.
 
-Typically foundation models are 'pre-trained' using a decoder that attempts to solve a task that does not require manually labelled data, and so can use huge datasets from the internet e.g.:
+*Foundation models* are typically 'pre-trained' using a decoder that attempts to solve a task that does not require manually labelled data, and so can use huge datasets from the internet e.g.:
 
-- predict the next token in a sequence for *large language models* (Chat-GPT etc.)
-- removing randomly added 'noise' from an image   for *vision-based transformers* (Dall-E etc.)
+- predict the next token in a sequence for *large language models* (such as  Open's GPT-series, OpenLLaMa,  BERT, Medi-Bert etc.)
+- removing randomly added 'noise' from an image   for *vision-based transformers* (Dall-E, CLIP, RetFound etc )
  
-The goal is learn a useful 'embedding' (effectively a preprocessing that maps high-dimensional data onto  to a smaller set of features) that captures all of the important information within a sequence. This storing forms the bridge between the *encoder* (learned preprocessing) and the *decoder* which transforms the encoded inputs back into a form suitable for a task.  
-After pre-training, they are fine-tuned, adapted, or engineered for specific applications. Their adaptability makes them, in many cases, more efficient and versatile than building separate models for individual tasks.
+The goal of pre-training is learn a useful 'embedding' (effectively a preprocessing that maps high-dimensional data onto a smaller set of features) that captures all of the important information within a sequence. This embedding forms the bridge between the *encoder* (learned preprocessing) and the *decoder* which transforms the encoded inputs back into a form suitable for a task.  
+- After pre-training, they are fine-tuned, adapted, or engineered for specific applications. Their adaptability makes them, in many cases, more efficient and versatile than building separate models for individual tasks.  
+  This process of adapting the model for a specific tasks typically uses smaller amounts of labelled data. Often this is done by only removing the 'head" (the final layer(s) of the *decoder*)  and replacing it with one suited to the new task (e.g. *N* output nodes for a classification problem with *N* different labels)
 
-With just a few powerful foundation models, trained on a limited number of datasets, a wide range of applications becomes possible. However, this also introduces concentration of power, raising concerns about monopolistic control over foundational AI infrastructure.
-
-
-**Examples**
-
-Some examples of foundational models are *Large Language Models* (such as  Open's GPT-series, OpenLLaMa and BERT), *Vision Transformers* (such as CLIP and RetFound),as MuAt).  
-Application specific fine-tuned models are mostly in the field of natural language processing (NLP), and well known examples include:
+- With just a few powerful foundation models, trained on a limited number of datasets, a wide range of applications becomes possible. However, this also introduces concentration of power, raising concerns about monopolistic control over foundational AI infrastructure.   
+  Application specific fine-tuned models are mostly in the field of natural language processing (NLP), and well known examples include:
 ChatGPT, DeepSeek, Gemini, and Grok.
 
 **Considerations at project inception**
-
-Pre-trained founda models can be subsequently they can be retrained for a specific tasks using smaller amounts of labelled data. Often this is done by only removing the 'head" (the final layer(s) of the *decoder*)  and replacing it with one suited to the new task (e.g. *N* output nodes for a classification problem with *N* different labels)
-
 When a project wants to use a foundation model it is vital from project inception to  be clear whether researchers want to:
 
-- Scenario 1. Import a pre-trained model, then put a new 'head' on it and train that for a new project **without affecting the rest of the foundation model**.
+- Scenario 1. Import a pre-trained model, then put a new 'head' on it and train that for a new project **without changing the rest of the foundation model**.
   - In this case they may not even need to export most of the model- just the prediction head. Therefore the 'head' can be treated as a simple [regression](#group-b1-regression-models) or [classification](#group-b2-classification-models) model.
   - It would be reasonable to ask the researcher to separate their code into callable functions that do preprocessing (i.e. the unchanged 'body' of the foundation model) and prediction ('head'). This would allow  the TRE can run the various mitigation tests described above.
   - If the head is simply a single output layer, then this is effectively  a linear or logistic regression model and can be evaluated as such.
@@ -384,9 +377,10 @@ In both these last two cases the full model needs to be evaluated for risks incl
     - it  **may** be possible for scenario 2, depending on the size of the training data and however many `epochs' (iterations) of training were used.
     - is **highly unlikely** to be feasible for scenario 3 (training a foundation model from scratch).
 
+
 <div style="background:lightpink;color:black">
 <p><b>Note that</b> a recent <a href="https://grants.nih.gov/grants/guide/notice-files/NOT-OD-25-081.html">US NIH Directive</a>] states that  Generative AI trained of fine-tuned on confidential data should be treated as data derivatives and not released.   </p>
-<p>Therefore In scenarios 2 and 3 we would currently only recommend mitigation  via ‘model query controls’ (i.e. not releasing)</p>
+<p>Therefore in scenarios 2 and 3 we would currently only recommend mitigation  via ‘model query controls’ (i.e. not releasing)</p>
 </div>
 
 ## 4.3 Category C: Predictions for each input made independently <a name="indepedent"></a>
@@ -402,37 +396,33 @@ Models in **_Category C_** where models may not embed data,  are grouped dependi
 ### Group C.1. Regression models
 
 Regression models are designed to predict a number out of range (continuous variable), which is based on the data provided to train the model. Instead of saying how likely something is, they predict how much or how long.
-
 Examples from different domains include: estimating air pollutant levels, predict risk of re-offending, forecasting duration of hospital stay, analysing drug response in patients, etc.
 
-In general, the risks and limitations associated with regression models are similar to those found in linear,logistic, or logit Regression, which are well-established in both research and applied settings.
+In general, the risks and mitigations associated with regression models are similar to those found in linear,logistic, or logit Regression, which are well-established in both research and applied settings.
 
-### Examples of Regression Models
 
-Regression models can be created with most Machine Learning Algorithms, as well as many different statistical techniques such as the *ARIMA* family of models.
-
-This group includes:
+This categories includes:
 
 - Simple and multiple linear regression models, which are the most well-known ML technique.
 - Polynomial regression for when the relationship between variables is not linear.
 - LASSO(least absolute shrinkage and selection operator) and ridge regression which are commonly applied when the dataset contains large number of features.
+- the *ARIMA* family of models
+- variants of tree/forest based ML algorithms such  as *DecisionTreeRegressor*, *RandonForestRegressor*, *XGBoostRegressor*
+- artificial neural networks such as scikit-learn's *MLPRegressor* and models built using frameworks such  *pytorch* or *keras/tensorflow* that use a linear activation function in the final layer.
 
-### Principal risk: *Small Group Reporting*
 
-- the model should not be specified so completely that  any part of it describes a small group of records
-- typically this means stipulating a lower limit on the *residual degrees of freedom* :  
-  ```DoF =  number_of_records - number_of_trainable_parameters_in_the_model```
+
+**Risks and Mitigations**
+The principal risk is that  the model should not be specified so completely that  any part of it describes a small group of records.
+This typically manifests as [Low Residual Degress of Freedom](#DoF).
 
 Some models may implicitly or explicitly perform *piece-wise regression* in  which case each sub-group should be checked for size.
 
-- i.e., are there some output values which are only predicted for a small number of training records
+- i.e., are there some output values which are only predicted for a small number of training records?
 
-### Secondary risks
+There may also be a risk of [Class Disclosure](#class-disclosure), but this probably only occurs when a models is trained to predict levels of more 2 or more variables.
 
-- Class disclosure
-  - but this probably only occurs when a models is trained to predict levels of more 2 or more variables.
-
-### Mitigations for Regression Models
+Mitigations might be that:  
 
 1. Models pass  'Structural Attacks'
 
@@ -458,42 +448,34 @@ Unlike the regression models, which predict a number out of a continuous range, 
 > [!IMPORTANT]
 > *Note that in traditional type of ML classification methods include KNN or SVMs, however, since these methods embed data, for the purpose of disclosure control such methods are excluded from this category.*
 
-#### Examples of Classification Models
+This category includes simple statistical approaches such as *logistic regression*, but in fact classification models can be created with most supervised Machine Learning Algorithms.
 
-Classification models can be created with most Machine Learning Algorithms
+**Risks  and Mitigations**
+Because many classification models form a partition of the input space and then report class probabilities within those partitions, they are little different from human-designed partitions such as tables. Therefore risks including [Small-group reporting](#small-group) ( which can enable Re-identification / Attribute Inference), and  [Class Disclosure](#class-disclosure) apply. These can be assessed, and mitigated for by passing checks such as `sacroml.attack.StructuralAttack()`. 
 
-#### Risks  and Mitigations
+However, whereas humans typically use common groupings to partition the data (for example dividing the integer *age* variable into categories such as *10-19*, *20-29*. ...) ML algorithms are driven by data, and hence the placement of partitions will often reflect values within individual records. Hence classification models, however simple,  may be vulnerable to risks such as [Membership Inference](#mia), [Attribute Inference for known members](#aia) and [Model Inversion](#model-inversion)
 
-1. Small-group reporting ( which can enable Re-identification / Attribute Inference)
-2. Class Disclosure
-3. Membership Inference
-4. Attribute Inference for known members
-5. Model Inversion
+This is an active research area. Currently the best method for risk-assessment is to use a tool such  as [sacroml](https://github.com/aisdc/sacroml) to run a series of "worst-case case scenario" attacks to estimate an upper-bound on vulnerability.
 
-<!--<div style="height:10px;background:black;width:400"></div>-->
 
-<!--## $${\text{\color{blue}Group\ 4:\ Models\ producing\ semi-structured\ outputs}}$$-->
-#### Group C.3. Models producing semi-structured outputs
+
+### Group C.3. Models producing semi-structured outputs
 
 These ML models generate outputs that are somewhat organised, but not as rigid as structured data like tables, yet more organised than free-form text. They produce a multi-field response.The output is generally flexible format like lists, or pairs of key-values, JSON, decision trees, ranked lists, sequence of labels and probability distributions. The main advantage is their adaptability. It is often used on data that doesn't have group labels (e.g. patients vs. controls, or dogs vs. cats). Instead, the algorithm identifies groups based on similarity measures.
 
 For example labelling specific areas of an image, telling us what is where, or extracting facts such as names and dates from documents. And it is machine readable. They have the potential to reveal hidden patterns, novel structures or new relationships. Human bias can be reduced and grouping is based on data structure rather than assumed or predefined categories.
 
-This type of models may be used as input for other type of more structured ML.
+This type of models may be used as input for other type of more structured ML, for example descriptors of segmented "regions of interest" may be used in vision-based quality control, medical diagnosis, etc.  
 
-#### Examples
+This category includes Convolutional Neural Network models such as U-Net etc.
 
-- Vision-based models that automatically segment "regions of interest" in an image.
-- In healthcare, it can be used to predict care outcomes, mortality risk or occurrence of complications.
   
-#### Risks  and Mitigations
+**Risks  and Mitigations**
+The risks derive form the fact that regions of interest may relate only to one record, or records from a group of people. Therefore there is a risk that the learned "feature detectors"  may in fact be memorising aspects of records.
 
-1. Small-group reporting ( which can enable Re-identification / Attribute Inference)
-2. Class Disclosure
-3. Membership Inference
-4. Attribute Inference for known members
-5. Model Inversion
+Hence potential risks include  [Small-group reporting](#small-group), [Class Disclosure](#class-disclosure), [Membership Inference](#mia), [Attribute Inference for known members](#aia) and [Model Inversion](#model-inversion).
 
+For most of these the best mitigation is to run and report attacks that attempt  replicate what an adversary might do.
 
 
 
