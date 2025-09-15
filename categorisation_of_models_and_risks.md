@@ -31,8 +31,10 @@
 4. [Categories of models according to type of prediction](#categories)
    1. [Category A: Predictions based om comparisons to stored data](#instance)
    2. [Category B. Models trained on sequence-based tasks](#sequence)
-   3. [Category C: Predictions for each input made independently](#indepedent)
-      1. 
+   3. [Category C: Predictions for each input made independently](#independent)
+      1. [Regression models](#regression)
+      2. [Classification Models](#classification)
+      3. [Models producing semi-structured outputs](#semi-structured)
 
 ---
 
@@ -109,14 +111,20 @@ So it is recommended to always read the relevant text before taking any decision
 
 This recommendations in this guide are additional to those normally employed for traditional statistical disclosure control and ordinary mitigation strategies.
 
+> [!NOTE]
+> * In the text below we use the terms:
+> *  [training data](#training-data) to refer to the subset of the data provided by the TRE which the researcher uses for training, and
+> *  [input data](#input-data) to mean the training data **after pre-processing** i.e. in the form presented to the model for training.
+> *  These may be the same, or pre-processing may provide the input data with additional anonymity.
+
+** CHECK THE TERMS ARE USED CONSISTENTLY MAYBE DEFINE RAW DATA (from TRE or deployment) AS WELL**
+
 ---
 
 # 3: Types of risk considered <a name="types-of-risk"></a>
-> [!NOTE]
-> * In the text below we use the term *input data* to mean the data after pre-processing that is used to train the model. It is not necessarily the raw data provided by the TRE to the user or researcher.*
 
 ## 3.1 Extraction of *explicitly* stored data: <a name="explicit"></a>
-  Some models work on the basis on having as part of the model a carefully selected amount of records included to be able to make predictions. In fact this is how the so called "Lazy learners" or "instance-based" models work.
+  Some models work on the basis of including a carefully selected amount of input data included to be able to make predictions. In fact this is how the so called "Lazy learners" or "instance-based" models work.
   
 In this case an external attacker can directly extract some of the training data from the egressed model.  
 The only mitigation for this risk is that the TRE would be content to release the training data as provided to the model.
@@ -383,7 +391,7 @@ In both these last two cases the full model needs to be evaluated for risks incl
 <p>Therefore in scenarios 2 and 3 we would currently only recommend mitigation  via ‘model query controls’ (i.e. not releasing)</p>
 </div>
 
-## 4.3 Category C: Predictions for each input made independently <a name="indepedent"></a>
+## 4.3 Category C: Predictions for each input made independently <a name="independent"></a>
 
 This category are lower privacy risk type of ML models. Data is not explicitly stored, however, in some circumstances might leak certain specific groups of data.
 Models in **_Category C_** where models may not embed data,  are grouped depending on the type of privacy risk they pose at the output check time. The key question is whether models are designed to predict:
@@ -393,7 +401,7 @@ Models in **_Category C_** where models may not embed data,  are grouped dependi
 - *Semi-structured outputs:* those predictions are more flexible than the previous type, it's organised but not fixed. It can be a combination of labels, text, lists, etc. (e.g. segmented images)
 
 <!--## $${\text{\color{blue}Group\ 2:\ Regression\ Models}}$$-->
-### Group C.1. Regression models
+### Group C.1. Regression models <a name="regression"></a>
 
 Regression models are designed to predict a number out of range (continuous variable), which is based on the data provided to train the model. Instead of saying how likely something is, they predict how much or how long.
 Examples from different domains include: estimating air pollutant levels, predict risk of re-offending, forecasting duration of hospital stay, analysing drug response in patients, etc.
@@ -439,7 +447,7 @@ Mitigations might be that:
 
 <!--## $${\text{\color{blue}Group\ 3:\ Classification\ Models}}$$-->
 
-### Group C.2. Classification Models.
+### Group C.2. Classification Models.<a name="classification"></a>
 
 These models are designed to assign a new given entry or data point to a one of the predefined set of categories, which can contain 2 or more options. 
 
@@ -459,7 +467,7 @@ This is an active research area. Currently the best method for risk-assessment i
 
 
 
-### Group C.3. Models producing semi-structured outputs
+### Group C.3. Models producing semi-structured outputs<a name="semi-structured"></a>
 
 These ML models generate outputs that are somewhat organised, but not as rigid as structured data like tables, yet more organised than free-form text. They produce a multi-field response.The output is generally flexible format like lists, or pairs of key-values, JSON, decision trees, ranked lists, sequence of labels and probability distributions. The main advantage is their adaptability. It is often used on data that doesn't have group labels (e.g. patients vs. controls, or dogs vs. cats). Instead, the algorithm identifies groups based on similarity measures.
 
@@ -557,12 +565,11 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 | Category | Type of model | Risk | Event likelihood |  Mitigation | Stage | Residual risks | Adversarial attacks required | Computational cost |
 | --- |  --- | --- | --- | --- | --- | --- |--- | --- |
-| A: Stored data | A.1. Instance-based | - Data included in the model |🔴| - Do not release of the TRE <br>- Anonymise data <br/> - Use synthetic data instead<br/> - Remove vectors where possible<br/> - Deploy to MQC system | - Design<br/> - Governance<br/> - Development<br/> - Release| - Small group reporting 🔴 <br> - Class disclosure 🔴 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
-| A: Store data | A.2. Foundation models | - Data included in the model <br/> - Small group reporting <br/> - Class Disclosure  <br/> - Attribute Inference for known members |🔴 <br> 🟡<br/> 🟡<br/> 🟢<br>|- Do not release of the TRE <br> - Import a pre-trained model, change'head' and train for a new application without affecting the rest of the foundation model.<br/> - Import a pre-trained model, change head, then adapt the head and the 'body' of foundation model weights.<br/> - Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
-| B: Do not store data | B.1. Regression models | - Small group reporting <br/> - Class disclosure  |🟢<br>🟢| - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢| &#x2191;&#x2191;|
-| B: Do not store data | B.2. Classification models | - Small group reporting  <br/> - Class Disclosure  <br/> | 🟢<br>🟢| |  |  | Required always 🟢| &#x2191;&#x2191;|
-| B: Do not store data | B.3. Models producing semi-structured outputs |  - Small group reporting  <br/> - Class Disclosure  | 🟢<br>🟢 ||  |  | Required always 🟢| &#x2191;&#x2191;&#x2191;&#x2191;|
-| B: Do not store data | B.4 Models producing unstructured outputs |  - Regurgitate implicitly stored training data  <br/> - Small group reporting  <br/> - Class Disclosure   |🟡<br>🟢<br>🟢 |- Do not release of the TRE <br>- Anonymise the text<br/> - Deploy to MQC system | - Design <br/> - Development | - Some forms of personal data might still be present  | Not possible at the moment(?) | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+| A: Prediction via <br>comparison to <br>stored data|  Instance-based<br>Support Vector Machines | [Extraction of explicitly stored data](#explicit) |🔴| TRE would be prepared to release input data <br/> **or** Deploy to MQC system | - Design<br/> - Governance<br/> - Development<br/> - Release| - Small group reporting 🔴 <br> - Class disclosure 🔴 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
+| B: Sequence-based prediction | Generative AI <br>Foundation models |  Small group reporting <br/> Class Disclosure  <br/>Membership Inference <br>  Attribute Inference <br> Jailbreaking |🔴 <br> 🟡<br/> 🟡<br/> 🟢<br>🔴|- Do not release of the TRE <br> - Only adapt and egress new 'head' for imported pre-trained model <br/> Adapt head **and body** of imported pre-trained model.<br/> Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+| C: Independent predictions | C.1. Regression models | - Small group reporting <br/> - Class disclosure  |🟢<br>🟢| - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢| &#x2191;&#x2191;|
+| C: Independent predictions | C.2. Classification models | - Small group reporting  <br/> - Class Disclosure  <br/> | 🟢<br>🟢| |  |  | Required always 🟢| &#x2191;&#x2191;|
+| C: Independent predictions | C.3. Models producing semi-structured outputs |  - Small group reporting  <br/> - Class Disclosure  | 🟢<br>🟢 ||  |  | Required always 🟢| &#x2191;&#x2191;&#x2191;&#x2191;|
 
 </div>
 
