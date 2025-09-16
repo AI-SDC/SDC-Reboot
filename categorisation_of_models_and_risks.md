@@ -544,11 +544,42 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 <https://dl.acm.org/doi/full/10.1145/3624010>
 
-<div style="color:black;background:lightgreen"><h3>Update table below if we agree on new categories</h3></div>
+- Wui, H, and Yao, C.:*Membership Inference Attacks on Large-Scale Models: A Survey* arXiv preprint. <https://doi.org/10.48550/arXiv.2503.19338>
 
-### $${\text{\color{blue}Summary table}}$$
 
-#### Risks
+
+[1] Learning (ML) models from Trusted Research Environments (TREs),” Zenodo, 2022.
+
+[2] P. W. J.E. Smith, M. Albashir, S. Bacon, B. Butler-Cole, J. Caldwell, C. Cole, A. Crespi Boixader, E. Green, E. Jefferson, Y. Jones, S. Krueger, J. Liley, A. McNeill, K. O’Sullivan, K. Oldfield, R. Preen, F. Ritchie, L. Robinson, S. Rogers, P. Stokes, A. Tilbr, “Semi-Automated Checking of Research Outputs (SACRO),” Zenodo, 2023.
+
+[3] E. Green, F. Ritchie, and P. White, “The statbarn: A New Model for Output Statistical Disclosure Control,” in Privacy in Statistical Databases, 2024, pp. 284–293.
+
+***NEED FIXING***
+
+
+# Summary tables
+
+## Risks per model type
+
+|Model type    | Extraction of<br> explicitly <br>included data | Small group <br> reporting | Class <br>disclosure | Low Degrees<br> of Freedom| Membership<br> Inference | Attribute <br> Inference | Model <br> Inversion | Jail-<br>breaking | Computational<br> cost|
+|---|---|---|---|---|---|---|---|---|---|
+|A: Prediction via <br>comparison to <br>stored data|🔴|🔴|🔴|🔴|🔴|🔴|🔴|🟢|&#x2191;|
+|B:Sequence-based <br>Foundation models<br>(All weights adapted)|🟢|🔴|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+|C1:Regression models|🟢|🔴|🟡|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
+|C2:Classification|🟢|🔴|🔴|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
+|C3: Models producing <br>semi-structured outputs|🟢|🔴|🔴|🔴|🔴|🟡|🔴|🟡|&#x2191;&#x2191;&#x2191;|
+
+
+
+Legend: 
+🟢Low risk
+🟡Medium Risk
+🔴High Risk
+❓Unknown
+
+
+
+
 
 <style>
     .heatMap {
@@ -601,19 +632,5 @@ Risk classification:
 </div>
 
 
-## Risk evaluation and overall risk score
-
-Risk for the purpose of disclosure control has two components: the likelihood an event happening, and the impact it has when it happens. The likelihood 
-
-The risk score is calculated by adding all the impact events risks levels multiplied by the likelihood of the event happening. The score should account for all the mitigation measures taken, which should be reflected either as likelihood or impact.
-
-The scrutiny of disclosure control should be based upon the risk score and others residual risks after applying the relevant mitigation strategies. However, some types of models will still require specific solutions for disclosure control.
 
 
-#### References
-
-[1] Learning (ML) models from Trusted Research Environments (TREs),” Zenodo, 2022.
-
-[2] P. W. J.E. Smith, M. Albashir, S. Bacon, B. Butler-Cole, J. Caldwell, C. Cole, A. Crespi Boixader, E. Green, E. Jefferson, Y. Jones, S. Krueger, J. Liley, A. McNeill, K. O’Sullivan, K. Oldfield, R. Preen, F. Ritchie, L. Robinson, S. Rogers, P. Stokes, A. Tilbr, “Semi-Automated Checking of Research Outputs (SACRO),” Zenodo, 2023.
-
-[3] E. Green, F. Ritche, and P. White, “The statbarn: A New Model for Output Statistical Disclosure Control,” in Privacy in Statistical Databases, 2024, pp. 284–293.
