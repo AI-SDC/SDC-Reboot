@@ -5,17 +5,10 @@
 <p> V0.3 September 2025</p>
 </div>
 
-<!--
-> ℹ️ 
-> $$\textcolor{gray}{Initial\ Authors: Jim\ Smith,\ Alba\ Crespi\ Boixader\ 2025}$$
->
-> ### $$\textcolor{gray}{V0.2: August\ 2025}$$
-
-<!--<div style="height:10px;background:black;width:400"></div>-->
-
 
 # Table of contents
 1. [Introduction](#introduction)
+    1. [Summary Table](#summary-table) 
 2. [Purpose](#purpose)
     1. [How to navigate and use this document](#howtouse)
     2. [Assumptions](#assumptions)
@@ -53,6 +46,21 @@ Risks can be minimised and avoided in most cases, but cannot always be completel
 
 Previous work on GRAIMatter project[1], SACRO[2] and SDC-Reboot Community Interest Group showed the need for a simple and clear guidance to identify risks associated with ML projects, and the corresponding mitigation strategies.
 
+## Summary of risks for different types of prediction (categories of model) <a name="summary-table"></a>
+
+
+|Category|Nature of <br>prediction    | Extraction of<br> explicitly <br>included data | Small group <br> reporting | Class <br>disclosure | Low Degrees<br> of Freedom| Membership<br> Inference | Attribute <br> Inference | Model <br> Inversion | Jail-<br>breaking | Computational<br> cost|
+|---|---|---|---|---|---|---|---|---|---|---|
+|A| Comparison to <br>stored data|🔴|🔴|🔴|🔴|🔴|🔴|🔴|🟢|&#x2191;|
+|B|Next token in <br>sequence <br>(fine-tuned<br>LLMs etc.)|🟢|🟡|🟡|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+|C1|Numbers <br>(Regression) |🟢|🟡|🟡|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
+|C2|Class labels<br>(Classifiers)|🟢|🟡|🟡|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
+|C3|Semi-structured <br> outputs|🟢|🟢|🟢|🔴|🔴|🟡|🔴|🟡|&#x2191;&#x2191;&#x2191;|
+
+
+
+|Legend: |🟢Low risk | 🟡Medium Risk | 🔴High Risk |❓Unknown|
+|---|---|---|---|---|
 
 ---
 
@@ -559,20 +567,7 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 # Summary tables
 
-## Risks per type of prediction (category)
 
-|Category|Nature of <br>prediction    | Extraction of<br> explicitly <br>included data | Small group <br> reporting | Class <br>disclosure | Low Degrees<br> of Freedom| Membership<br> Inference | Attribute <br> Inference | Model <br> Inversion | Jail-<br>breaking | Computational<br> cost|
-|---|---|---|---|---|---|---|---|---|---|---|
-|A| Comparison to <br>stored data|🔴|🔴|🔴|🔴|🔴|🔴|🔴|🟢|&#x2191;|
-|B|Next token in <br>sequence <br>(fine-tuned<br>LLMs etc.)|🟢|🟡|🟡|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
-|C1|Numbers <br>(Regression) |🟢|🟡|🟡|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
-|C2|Class labels<br>(Classifiers)|🟢|🟡|🟡|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
-|C3|Semi-structured <br> outputs|🟢|🟢|🟢|🔴|🔴|🟡|🔴|🟡|&#x2191;&#x2191;&#x2191;|
-
-
-
-|Legend: |🟢Low risk | 🟡Medium Risk | 🔴High Risk |❓Unknown|
-|---|---|---|---|---|
 
 
 ## TO-DO: refactor table below into mitigations per risk
