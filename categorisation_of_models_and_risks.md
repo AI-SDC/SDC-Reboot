@@ -559,27 +559,23 @@ Mitigation 1:  *alignment* via human-in-the-loop-reinforcement-learning,
 
 # Summary tables
 
-## Risks per model type
+## Risks per type of prediction (category)
 
-|Model type    | Extraction of<br> explicitly <br>included data | Small group <br> reporting | Class <br>disclosure | Low Degrees<br> of Freedom| Membership<br> Inference | Attribute <br> Inference | Model <br> Inversion | Jail-<br>breaking | Computational<br> cost|
-|---|---|---|---|---|---|---|---|---|---|
-|A: Prediction via <br>comparison to <br>stored data|🔴|🔴|🔴|🔴|🔴|🔴|🔴|🟢|&#x2191;|
-|B:Sequence-based <br>Foundation models<br>(All weights adapted)|🟢|🔴|🔴|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
-|C1:Regression models|🟢|🔴|🟡|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
-|C2:Classification|🟢|🔴|🔴|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
-|C3: Models producing <br>semi-structured outputs|🟢|🔴|🔴|🔴|🔴|🟡|🔴|🟡|&#x2191;&#x2191;&#x2191;|
-
-
-
-Legend: 
-🟢Low risk
-🟡Medium Risk
-🔴High Risk
-❓Unknown
+|Category|Nature of <br>prediction    | Extraction of<br> explicitly <br>included data | Small group <br> reporting | Class <br>disclosure | Low Degrees<br> of Freedom| Membership<br> Inference | Attribute <br> Inference | Model <br> Inversion | Jail-<br>breaking | Computational<br> cost|
+|---|---|---|---|---|---|---|---|---|---|---|
+|A| Comparison to <br>stored data|🔴|🔴|🔴|🔴|🔴|🔴|🔴|🟢|&#x2191;|
+|B|Next token in <br>sequence <br>(fine-tuned<br>LLMs etc.)|🟢|🟡|🟡|🔴|🔴|🔴|🔴|🔴|&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+|C1|Numbers <br>(Regression) |🟢|🟡|🟡|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
+|C2|Class labels<br>(Classifiers)|🟢|🟡|🟡|🔴|🔴|🔴|🔴|🟢|&#x2191;&#x2191;|
+|C3|Semi-structured <br> outputs|🟢|🟢|🟢|🔴|🔴|🟡|🔴|🟡|&#x2191;&#x2191;&#x2191;|
 
 
 
+|Legend: |🟢Low risk | 🟡Medium Risk | 🔴High Risk |❓Unknown|
+|---|---|---|---|---|
 
+
+## TO-DO: refactor table below into mitigations per risk
 
 <style>
     .heatMap {
@@ -592,18 +588,20 @@ Legend:
     }
 </style>
 
+
 <div class="heatMap">
 
-| Category | Type of model | Risk | Event likelihood |  Mitigation | Stage | Residual risks | Adversarial attacks required | Computational cost |
+| Nature of <br>prediction | Type of model | Risk | Event likelihood |  Mitigation | Stage | Residual risks | Adversarial attacks required | Computational cost |
 | --- |  --- | --- | --- | --- | --- | --- |--- | --- |
-| A: Prediction via <br>comparison to <br>stored data|  Instance-based<br>Support Vector Machines | [Extraction of explicitly stored data](#explicit) |🔴| TRE would be prepared to release input data <br/> **or** Deploy to MQC system | - Design<br/> - Governance<br/> - Development<br/> - Release| - Small group reporting 🔴 <br> - Class disclosure 🔴 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
-| B: Sequence-based prediction | Generative AI <br>Foundation models |  Small group reporting <br/> Class Disclosure  <br/>Membership Inference <br>  Attribute Inference <br> Jailbreaking |🔴 <br> 🟡<br/> 🟡<br/> 🟢<br>🔴|- Do not release of the TRE <br> - Only adapt and egress new 'head' for imported pre-trained model <br/> Adapt head **and body** of imported pre-trained model.<br/> Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
-| C: Independent predictions | C.1. Regression models | - Small group reporting <br/> - Class disclosure  |🟢<br>🟢| - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢| &#x2191;&#x2191;|
-| C: Independent predictions | C.2. Classification models | - Small group reporting  <br/> - Class Disclosure  <br/> | 🟢<br>🟢| |  |  | Required always 🟢| &#x2191;&#x2191;|
-| C: Independent predictions | C.3. Models producing semi-structured outputs |  - Small group reporting  <br/> - Class Disclosure  | 🟢<br>🟢 ||  |  | Required always 🟢| &#x2191;&#x2191;&#x2191;&#x2191;|
+| A: Comparison to <br>stored data|  Instance-based<br>Support Vector Machines | [Extraction of explicitly stored data](#explicit) |🔴| TRE would be prepared to release input data <br/> **or** Deploy to MQC system | - Design<br/> - Governance<br/> - Development<br/> - Release| - Small group reporting 🔴 <br> - Class disclosure 🔴 <br/> - Attribute Inference| Required when mitigations in place |  &#x2191; |
+| B: Token in <br> sequence | Generative AI <br>Foundation models |  Small group reporting <br/> Class Disclosure  <br/>Membership Inference <br>  Attribute Inference <br> Jailbreaking |🔴 <br> 🟡<br/> 🟡<br/> 🟢<br>🔴|- Do not release of the TRE <br> - Only adapt and egress new 'head' for imported pre-trained model <br/> Adapt head **and body** of imported pre-trained model.<br/> Train a foundation model from scratch.| - Design<br/> - Development | Unknown | Probably not feasible <br>due to the size and complexity.  | &#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;&#x2191;|
+| C: Independent | C.1. Regression models | - Small group reporting <br/> - Class disclosure  |🟢<br>🟢| - Lower limit on the degrees of freedom <br/> - Perform structural attacks <br/> - Model Query Controls| - Development <br/> - Release |  | Required always 🟢| &#x2191;&#x2191;|
+| C: Independent  | C.2. Classification models | - Small group reporting  <br/> - Class Disclosure  <br/> | 🟢<br>🟢| |  |  | Required always 🟢| &#x2191;&#x2191;|
+| C: Independent  | C.3. Models producing <br> semi-structured outputs |  - Small group reporting  <br/> - Class Disclosure  | 🟢<br>🟢 ||  |  | Required always 🟢| &#x2191;&#x2191;&#x2191;&#x2191;|
 
 </div>
 
+<!---
 **Legend**
 
 *Event likelihood*<br/>
@@ -611,12 +609,18 @@ Legend:
 🟡 Medium<br/>
 🔴 High<br/>
 
+--->
+
+<!---
 Risk classification:
 
 - How likely is the event/specific type of risk to happen.
 - The impact it has. For example, for disclosure control could be something such as exposing 1 or 2 records versus exposing all/almost all records.
+--->
 
 <!--actors: data controller, model development team, model owner, product users-->
+
+<!---
 <div class="heatMap">
 
 | Stage | Mitigation | Risk | Groups of model| Responsibilities |
@@ -631,6 +635,7 @@ Risk classification:
 
 </div>
 
+--->
 
 
 
