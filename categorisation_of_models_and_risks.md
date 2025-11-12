@@ -1,7 +1,7 @@
 # Types of risks and possible mitigations associated with different categories of machine learning models
 
 > ## [!IMPORTANT] NOTE
-> ## This document has been moved, please find the [latest under-development version here.](https://docs.google.com/document/d/1-BqycnAmIO7qwKRwClpBNWDJ4I7u0aDa389_W2JY7cw/edit?tab=t.0#heading=h.lqj7sw5dp6de)
+> ## This document has been moved, please find the [latest under-development version here.](https://docs.google.com/document/d/1-BqycnAmIO7qwKRwClpBNWDJ4I7u0aDa389_W2JY7cw/edit?usp=sharing)
 
 <div style="width:300;color:blue;padding:50px">
 <h3>Initial Authors: Jim Smith, Alba Crespi Boixader</h3>
