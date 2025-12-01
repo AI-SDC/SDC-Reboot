@@ -10,3 +10,8 @@ Community of Interest on SDC-Reducing Barriers to Outputs from TREs
 - please navigate to the issues tab to see if there is already a similar issue of suggestion
    - if yes, please add a comment or an upvote to the existing issue,  rather than raise a duplicate issue
    - otherwise please add a new issue providing as much information as possible about the desired behavour (or the bug)
+
+## Acknowledgement of Funding
+This Community group is supported by UKRI DARE UK - Phase 2 (UKRI Data and Analytics Research Environments UK- Phase 2). 
+
+DARE UK - Phase 2 is delivered jointly by HDR UK, and ADR UK, and funded by UKRI Digital Research Infrastructure Fund.
