@@ -139,7 +139,7 @@ subgraph RiskOfFullySpecifiedModel
     FullySpecified -->|HasLikelihood| calculatedFS["`**Calculated** by attack`"]
           style calculatedFS shape:circle, fill:lightgreen   
     FScomment@{ shape: text, label: "Standard SDC process to measure DoF" }
-    FScomment -.- FullySpecified
+    FScomment -.- calculatedFS
 end
 style RiskOfFullySpecifiedModel fill:lightpink
 
@@ -204,3 +204,20 @@ Common -->|hasRisk| AttributeInference
 Common -->|hasRisk| SmallGroups
 Common -->|hasRisk| ClassDisclosure
 Common -->|hasRisk| FullySpecified
+
+```
+
+
+
+
+## Takeaway points:
+A whole lot of links between risks and mitigation are missed (see pink boxes within some green boxes)
+model going to ControlledAcessServer -> fine
+Safety case is that preprocessing transforms records so they would be ok to release ==> set if possible evidence that could be collected
+Otherwise:
+
+- instance based models (CatA) ==>Likelihood of attack via explicitly stored data is 100%  => NO
+- Generative AI (CatB) ==> Risk of 'Extraction' (Regurgitation) ==>no consensus on reliable measure or defence ==> NO
+- independent predictions for each record (catC) :  one edge case for simplistic regression otherweise range of risks and defences
+
+### This does not distinguish between record level and indetity level risk (e.g. person has multiple records for different hospital visits )
