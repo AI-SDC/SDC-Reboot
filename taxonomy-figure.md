@@ -1,5 +1,5 @@
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
-
+# Flowchart for decision making on mitigations and risk for AI models trained in sensitive data
+ This is designed as a flowchart but *should* map onto the information needed for extending the statbarn taxomony
 
 ```mermaid
 
