@@ -4,13 +4,31 @@
 ```mermaid
 
 
+
 flowchart LR
+
+classDef invisible fill:none,stroke:0px,stroke-width:0px,width:0px,height:0px ;
+classDef riskStyle fill:lightpink ;
+classDef mitigationStyle fill:lightgreen ;
+classDef constant fill:lightblue,shape:stadium ;
+classDef sometext shape:text ;
+classDef roundedorange fill:orange,shape:rounded;
+classDef roundedred fill:red,shape:rounded;
+
+subgraph MitigationByStandardSDC
+   StandardSDC[Application of standard SDC proceedures]
+   StandardSDC -->|hasParameter| minthresh["Minimum Group Size"]:::constant
+   StandardSDC -->|hasParameter| mindof["Minimum Degrees of Freedom"]:::constant
+   StandardSDC -->|hasParameter| nozeros["Zeros indicate class disclosure"]:::constant
+   AccComment1@{ shape: text, label: "unlikely to be disclosive
+   except small groups in confusion matrix" } --> StandardSDC
+end
+style MitigationByStandardSDC fill:lightgreen
+
 subgraph MitigationByModelAccessControls
     ModelQueryServer[Deployment on secure server with restricted access ]   
-    ModelQueryServer-->|hasParameter| whitelist[list of permitted IPaddresses]
-    style whitelist shape:circle, fill:lightblue     
-    ModelQueryServer-->|hasParameter| throttling[controls on volume of queries]
-    style throttling shape:circle, fill:lightblue     
+    ModelQueryServer-->|hasParameter| whitelist[list of permitted IPaddresses]:::constant       
+    ModelQueryServer-->|hasParameter| throttling[controls on volume of queries]:::constant
     ModelQueryServer-->|mitigatesRisks| mitigatesMAC[Extraction
         Attribute Inference 
         Membership Inference ]
@@ -20,15 +38,13 @@ style MitigationByModelAccessControls fill:lightgreen
 
 subgraph MitigationByKAnonymity
     KAnon[preprocessing renders data k-anonymous]
-    KAnon -->|hasParameter| K([K])
-    style K shape:circle, fill:lightblue
-        KAnon-->|mitigatesRisks| mitigatesK[Extraction
+    KAnon -->|hasParameter| K[K]:::constant
+    KAnon-->|mitigatesRisks| mitigatesK[Extraction
         Attribute Inference 
         Membership Inference ]
     style mitigatesK fill:pink
 
-    Kcomment@{ shape: text, label: "equivalent to MinThreshold for cell counts" }
-    Kcomment -.- K
+    Kcomment@{ shape: text, label: "equivalent to MinThreshold for cell counts." } -.- K
 end
 style MitigationByKAnonymity fill:lightgreen
 
@@ -39,38 +55,34 @@ subgraph MitigationByPIIRemoval
         Attribute Inference 
         Membership Inference ]
     style mitigatesPII fill:pink
-
 end
 style MitigationByPIIRemoval fill:lightgreen
 
 
 subgraph MitigationByDPEmbedding
     DPE["`Data is transformed **prior to modelling** using Differentially Private method`"]
-    DPE -->|hasParameter|eta[eta:strength of guarantee]
-    style eta shape:circle, fill:lightblue
+    DPE -->|hasParameter|etaDPE([eta:strength of guarantee]):::constant
     DPE-->|mitigatesRisks| mitigatesDPE[Extraction
         Attribute Inference 
         Membership Inference ]
    style mitigatesDPE fill:pink
 
-    etacomment@{ shape: text, label: "Non-trivial to configure if duplicates may be present" }
-    etacomment -.-eta
+    etacomment@{ shape: text, label: "Non-trivial to configure protect against class disclosure" } -.-etaDPE
 end
 style MitigationByDPEmbedding fill:lightgreen
 
 subgraph MitigationByDPOptimiser
     DPO[optimiser is Differentially Private]
-    DPO -->|hasParameter|etaO[eta:strength of guarantee]
-    style etaO shape:circle, fill:lightblue
-    etacommentO@{ shape: text, label: "Non-trivial to configure if duplicates may be present" }
-    etacommentO -.-etaO
+    DPO -->|hasParameter|etaO[eta:strength of guarantee]:::constant
+    DPO -->|hasRestriction| duplicatesDPO[Invalid if individuals may have duplicate records]
+    style duplicatesDPO fill:lightblue
+    etacommentO@{ shape: text, label: "Non-trivial to configure to protect against class disclosure" } -.-etaO
 end
 style MitigationByDPOptimiser fill:lightgreen
 
 subgraph MitigationByAttackInvulnerability
     Invulnerability[Success of Attacks not significantly better than random guessing ]   
-    Invulnerability-->|hasParameter| alpha[threshold for probability result occurs by chance]
-    style alpha shape:circle, fill:lightblue     
+    Invulnerability-->|hasParameter| alpha[threshold for probability result occurs by chance]:::constant
 end
 style MitigationByAttackInvulnerability fill:lightgreen
 
@@ -82,8 +94,7 @@ subgraph RiskOfExtraction
   style unquantifiable shape:circle, fill:pink   
   %%Extraction --> |hasMitigation| Pseudonymised
   %%Extraction --> |hasMitigation| ModelQueryServer[Model Access Controls]  
-  extractcomment@{ shape: text, label: "Highly active research field, no meaningful consensus on defence" }
-  extractcomment -.-unquantifiable
+  extractcomment@{ shape: text, label: "Highly active research field, no meaningful consensus on defence" } -.-unquantifiable
 end
 style RiskOfExtraction fill:lightpink
 
@@ -128,7 +139,7 @@ end
 style RiskOfSmallGroups fill:lightpink
 
 subgraph RiskOfClassDisclosure
-  ClassDisclosure(Model reports some values do not occur - classification -- or upper/lower bounded  --regression-- for some small groups of records)
+  ClassDisclosure(Model reports some values do not occur - classification -- or upper/lower bounded or some small groups of records --regression f)
   ClassDisclosure -->|HasLikelihood| calculatedCD["`**calculated** by attack`"]
 end
 style RiskOfClassDisclosure fill:lightpink
@@ -138,63 +149,58 @@ subgraph RiskOfFullySpecifiedModel
   FullySpecified[Low Residual Degrees of Freedom means model is effectively a lookup table]
     FullySpecified -->|HasLikelihood| calculatedFS["`**Calculated** by attack`"]
           style calculatedFS shape:circle, fill:lightgreen   
-    FScomment@{ shape: text, label: "Standard SDC process to measure DoF" }
-    FScomment -.- calculatedFS
+    FScomment@{ shape: text, label: "Standard SDC process to measure DoF" } -.- calculatedFS
 end
 style RiskOfFullySpecifiedModel fill:lightpink
 
-%%here's the main block
-A{Type of egress?} -->|trained model| Destination{Destination of egress}
+%% Here's the main block
+A{Type of egress?} 
+A -->|trained model| Destination{Destination of egress}
 
-A -->|performance metrics| AccMetrics[standard SDC rules]
-style AccMetrics fill:lightgreen
-AccComment1@{ shape: text, label: "unlikely to be disclosive
-except small groups in confusion matrix" }
-AccComment1 --> AccMetrics
+A -->|performance metrics| StandardSDC
 
 %% Destination of egress
 Destination -->|Servers with access controls| ModelQueryServer
-
 Destination -->|Outside World| ImpactBasedMitigation{Is the mitigation based on the impact of model leakage}
-ImpactBasedMitigation -->|Yes| Rationale{Documented Evidence}
-Rationale -->|ProvidedBy| MitigationByDPEmbedding
-Rationale -->|ProvidedBy| MitigationByKAnonymity
-Rationale -->|ProvidedBy| MitigationByPIIRemoval
+ImpactBasedMitigation -->|Yes| NoDups{Only one record per individual}
+NoDups --> Yes:::invisible
+Yes -->|hasSourceOfEvidence| MitigationByDPEmbedding
+Yes -->|hasSourceOfEvidence| MitigationByKAnonymity
+Yes -->|hasSourceOfEvidence| MitigationByPIIRemoval
+NoDups --> No:::invisible
+No -->|hasSourceOfEvidence| MitigationByPIIRemoval
 
 %%personal data going to the real world
-ImpactBasedMitigation -->|No| Type{Type of Model}
-Type -->|Instance Based| CatA([CategoryA
-                              e.g. Support Vector Machines,
-                              k-Nearest Neighbours])
+ImpactBasedMitigation -->|No| Type{Basis of prediction}
 %% instance based - no
-style CatA fill:red
+Type -->|Comparison to stored data| CatA([CategoryA :Instance-based
+                              e.g. Support Vector Machines,
+                              k-Nearest Neighbours]):::roundedred
+
 CatA -->|hasRisk| ExplicitlyStoredData
 certain -->Refuse
 style Refuse shape:stadium, fill:red
 
 %% Gen AI - No
 Type -->|SequenceBased| CatB([Category B
-                              e.g. Generative AI]) ---|hasRisk| Extraction 
+                              e.g. Generative AI]):::roundedred ---|hasRisk| Extraction 
 unquantifiable-->Refuse
-style CatB  fill:red
 
 
-%% CAt C Maybe 
-Type --> |Independent| CatC([Category C
+%% Cat C Maybe 
+Type --> |Independent per record| CatC([Category C
                               Independent
-                              predictions for each input])
-style CatC shape:rounded,fill:orange
+                              predictions for each input]):::roundedorange
 CatC -->LabelType{Type of prediction}
+LabelType -->|semi-structured|Segmentation([C3: Segmentation, Regions of Interest]):::roundedorange
+Segmentation -->|hasRisk| MembershipInference
 
-LabelType -->|unordered|Classification([C2: Classification Models])
-style Classification shape:rounded,fill:orange
+LabelType -->|unordered|Classification([C2: Classification Models]):::roundedorange
 
-LabelType -->|ordered|Regression([C1: Regression Models])
-style Regression shape:rounded,fill:orange
-LabelType -->|semi-structured|Segmentation([C3: Segmentation, Regions of Interest])
-style Segmentation shape:rounded,fill:orange
+LabelType -->|ordered|Regression([C1: Regression Models]):::roundedorange
 
-Classification -->Common[ML vulnerabilities]
+
+Classification -->Common[Supervised Learner]:::roundedorange
 Regression -->|Nature of Variables|SpecialReg{All independent variables continuous, cannot build piecewise models}
 SpecialReg  -->|No| Common
 SpecialReg -->|Yes| FullySpecified
@@ -220,4 +226,4 @@ Otherwise:
 - Generative AI (CatB) ==> Risk of 'Extraction' (Regurgitation) ==>no consensus on reliable measure or defence ==> NO
 - independent predictions for each record (catC) :  one edge case for simplistic regression otherweise range of risks and defences
 
-### This does not distinguish between record level and indetity level risk (e.g. person has multiple records for different hospital visits )
+### This does not distinguish between record level and identity level risk (e.g. person has multiple records for different hospital visits )
