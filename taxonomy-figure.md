@@ -5,11 +5,12 @@
 
 
 
-flowchart LR
+flowchart TD
 
 classDef invisible fill:none,stroke:0px,stroke-width:0px,width:0px,height:0px ;
 classDef riskStyle fill:lightpink ;
 classDef mitigationStyle fill:lightgreen ;
+    
 classDef constant fill:lightblue,shape:stadium ;
 classDef sometext shape:text ;
 classDef roundedorange fill:orange,shape:rounded;
@@ -61,22 +62,22 @@ style MitigationByPIIRemoval fill:lightgreen
 
 subgraph MitigationByDPEmbedding
     DPE["`Data is transformed **prior to modelling** using Differentially Private method`"]
-    DPE -->|hasParameter|etaDPE([eta:strength of guarantee]):::constant
+    DPE -->|hasParameter|epsilonDPE([epsilon:strength of guarantee]):::constant
     DPE-->|mitigatesRisks| mitigatesDPE[Extraction
         Attribute Inference 
         Membership Inference ]
    style mitigatesDPE fill:pink
 
-    etacomment@{ shape: text, label: "Non-trivial to configure protect against class disclosure" } -.-etaDPE
+    epsiloncomment@{ shape: text, label: "Non-trivial to configure protect against class disclosure" } -.-epsilonDPE
 end
 style MitigationByDPEmbedding fill:lightgreen
 
 subgraph MitigationByDPOptimiser
     DPO[optimiser is Differentially Private]
-    DPO -->|hasParameter|etaO[eta:strength of guarantee]:::constant
+    DPO -->|hasParameter|epsilonO[epsilon:strength of guarantee]:::constant
     DPO -->|hasRestriction| duplicatesDPO[Invalid if individuals may have duplicate records]
     style duplicatesDPO fill:lightblue
-    etacommentO@{ shape: text, label: "Non-trivial to configure to protect against class disclosure" } -.-etaO
+    epsiloncommentO@{ shape: text, label: "Non-trivial to configure to protect against class disclosure" } -.-epsilonO
 end
 style MitigationByDPOptimiser fill:lightgreen
 
@@ -115,8 +116,8 @@ subgraph RiskofMembershipInference
 
     %%MembershipInference --> |hasMitigation|KAnon
     %%MembershipInference -->|hasMitigation| Pseudonymised
-    MembershipInference -->|hasMitigation| DPO
-    MembershipInference -->|hasMitigation| Invulnerability
+    MembershipInference ---->|hasMitigation| DPO
+    MembershipInference ---->|hasMitigation| Invulnerability
 end
 style RiskofMembershipInference fill:lightpink
 
@@ -127,8 +128,8 @@ subgraph RiskofAttributeInference
 
     %%AttributeInference --> |hasMitigation|KAnon
     %%AttributeInference -->|hasMitigation| Pseudonymised
-    AttributeInference -->|hasMitigation| DPO
-    AttributeInference -->|hasMitigation| Invulnerability
+    AttributeInference ---->|hasMitigation| DPO
+    AttributeInference ---->|hasMitigation| Invulnerability
 end
 style RiskofAttributeInference fill:lightpink
 
@@ -161,7 +162,7 @@ A -->|performance metrics| StandardSDC
 
 %% Destination of egress
 Destination -->|Servers with access controls| ModelQueryServer
-Destination -->|Outside World| ImpactBasedMitigation{Is the mitigation based on the impact of model leakage}
+Destination ---->|Outside World| ImpactBasedMitigation{Is the mitigation based on the impact of model leakage}
 ImpactBasedMitigation -->|Yes| NoDups{Only one record per individual}
 NoDups --> Yes:::invisible
 Yes -->|hasSourceOfEvidence| MitigationByDPEmbedding
@@ -171,7 +172,7 @@ NoDups --> No:::invisible
 No -->|hasSourceOfEvidence| MitigationByPIIRemoval
 
 %%personal data going to the real world
-ImpactBasedMitigation -->|No| Type{Basis of prediction}
+ImpactBasedMitigation ---->|No| Type{Basis of prediction}
 %% instance based - no
 Type -->|Comparison to stored data| CatA([CategoryA :Instance-based
                               e.g. Support Vector Machines,
@@ -188,10 +189,10 @@ unquantifiable-->Refuse
 
 
 %% Cat C Maybe 
-Type --> |Independent per record| CatC([Category C
+Type ------> |Independent per record| CatC([Category C
                               Independent
                               predictions for each input]):::roundedorange
-CatC -->LabelType{Type of prediction}
+CatC ----->LabelType{Type of prediction}
 LabelType -->|semi-structured|Segmentation([C3: Segmentation, Regions of Interest]):::roundedorange
 Segmentation -->|hasRisk| MembershipInference
 
