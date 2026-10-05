@@ -5,7 +5,7 @@
 
 
 
-flowchart LR
+flowchart TD
 
 classDef invisible fill:none,stroke:0px,stroke-width:0px,width:0px,height:0px ;
 classDef riskStyle fill:lightpink ;
