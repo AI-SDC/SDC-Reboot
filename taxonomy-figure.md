@@ -172,7 +172,7 @@ NoDups --> No:::invisible
 No -->|hasSourceOfEvidence| MitigationByPIIRemoval
 
 %%personal data going to the real world
-ImpactBasedMitigation ---->|No| Type{Basis of prediction}
+ImpactBasedMitigation ------>|No| Type{Basis of prediction}
 %% instance based - no
 Type -->|Comparison to stored data| CatA([CategoryA :Instance-based
                               e.g. Support Vector Machines,
