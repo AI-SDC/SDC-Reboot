@@ -72,7 +72,7 @@ config:
 ---
 
 
-flowchart TD
+flowchart LR
 
 classDef invisible fill:none,stroke:0px,stroke-width:0px,width:0px,height:0px ;
 classDef riskStyle fill:lightpink ;
@@ -86,6 +86,7 @@ classDef roundedred fill:red,shape: rounded;
 
 
 subgraph MitigationByKAnonymity["`**MitigationByKAnonymity**`"]
+    direction LR
     KAnon[preprocessing renders data k-anonymous]
     KAnon -->|hasParameter| K[K]:::constant
     KAnon-->|mitigatesRisks| mitigatesK[Extraction
@@ -98,6 +99,7 @@ end
 style MitigationByKAnonymity fill:lightgreen
 
 subgraph MitigationByPIIRemoval["`**MitigationByPIIREmoval**`"]
+    direction LR
     Pseudonymised[All PII removed from training data]
     Pseudonymised -->|hasProcess|datasetspecific[data set specific]
     Pseudonymised-->|mitigatesRisks| mitigatesPII[Extraction
@@ -109,7 +111,8 @@ style MitigationByPIIRemoval fill:lightgreen
 
 
 subgraph MitigationByDPEmbedding["`**MitigationByDPEmbedding**`"]
-    DPE["`Data is transformed **prior to modelling** using Differentially Private method`"]
+     direction LR
+   DPE["`Data is transformed **prior to modelling** using Differentially Private method`"]
     DPE -->|hasParameter|epsilonDPE([epsilon:strength of guarantee]):::constant
     DPE-->|mitigatesRisks| mitigatesDPE[Extraction
         Attribute Inference 
@@ -128,7 +131,7 @@ style MitigationByDPEmbedding fill:lightgreen
 
 %% Here's the main block
 OUTSIDEWORLD[Trained Model being released to outside world] -->ImpactBasedMitigation{Is the Safety Case based on low likelihood or low impact?}
-ImpactBasedMitigation -->|Yes| NoDups{Only one record per individual}
+ImpactBasedMitigation -->|Low Impact| NoDups{Is there only one record per individual?}
 NoDups --> Yes:::invisible
 Yes -->|hasSourceOfEvidence| MitigationByDPEmbedding
 Yes -->|hasSourceOfEvidence| MitigationByKAnonymity
@@ -148,9 +151,6 @@ config:
   theme: 'base'
   themeVariables:
     fontSize: 28px
-
-
-
 ---
 
 
