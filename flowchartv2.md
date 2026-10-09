@@ -55,6 +55,7 @@ EgressType -->|performance metrics| MitigationByStandardSDC
 %% Destination of egress
 Destination -->|Servers with access controls| MitigationByModelAccessControls
 Destination ---->|Outside World| OUTSIDEWORLD[GO TO FIG2]
+style OUTSIDEWORLD fill:yellow
 
 ```
 
@@ -141,6 +142,7 @@ No -->|hasSourceOfEvidence| MitigationByPIIRemoval
 
 %%personal data going to the real world
 ImpactBasedMitigation ------>|Low Likelihood| SENSITIVEOUTSIDE[GO TO Fig 3]
+style SENSITIVEOUTSIDE fill:yellow
 
 ```
 
@@ -162,8 +164,90 @@ classDef mitigationStyle fill:lightgreen ;
     
 classDef constant fill:lightblue,shape:stadium ;
 classDef sometext shape:text ;
-classDef roundedorange fill:orange, shape:rounded;
-classDef roundedred fill:red,shape: rounded;
+classDef roundedorange fill:orange, shape:stadium;
+classDef roundedred fill:red,shape: stadium;
+
+
+subgraph RiskOfMIAAIA["`Additional Risks`"]
+direction LR
+   Secondary["` Membership Inference attacks<br> Attribute Inference Attacks`"]
+   Secondary-->|hasLikelihood| expensive["Expensive to measure accurately" ]
+   Secondary -->|hasEstimatedLikelihood| noconsensus["noconsensus"]
+    Secondary -->|hasMitigation| noconsensus
+
+   style noconsensus shape:circle, fill:pink 
+    secondarycomment@{ shape: text, label: "Highly active research field, no meaningful consensus on cost-efficient measurement or defence" } -.-noconsensus
+   Secondary2["`Models can be repurposed - violating consent`"] -->|hasLikelihood| high["High"]:::constant
+end
+
+style RiskOfMIAAIA fill:lightpink
+
+subgraph RiskOfExtraction["`**RiskOfExtraction**`"]
+  Extraction(Prompts can trigger regurgitation)
+  Extraction --> |hasLikelihood| unquantifiable["difficult to reliably quantify"]
+  style unquantifiable shape:circle, fill:pink   
+  %%Extraction --> |hasMitigation| Pseudonymised
+  %%Extraction --> |hasMitigation| ModelQueryServer[Model Access Controls]  
+  extractcomment@{ shape: text, label: "Highly active research field, no meaningful consensus on defence" } -.-unquantifiable
+end
+style RiskOfExtraction fill:lightpink
+
+subgraph RiskOfExplicitlyStoredData["`**RiskOfExplicitlyStoredData**`"]
+    ExplicitlyStoredData(Model explicitly stores data that can be accessed) 
+    ExplicitlyStoredData -->|hasLikelihood| certain["100%"]:::constant
+    style certain shape:circle, fill:#f11 
+    %%ExplicitlyStoredData -->|hasMitigation| KAnon
+    %%ExplicitlyStoredData -->|hasMitigation| DPE
+    %%ExplicitlyStoredData -->|hasMitigation| Pseudonymised
+end
+style RiskOfExplicitlyStoredData fill:lightpink
+
+
+%% Here's the main block
+SENSITIVE[Trained model with high impact of leakage] --> Type{Basis of prediction}
+
+%% instance based - no
+Type -->|Comparison to stored data| CatA(["`**CategoryA:** <br>Instance-based models<br> e.g. Support Vector Machines`"]):::roundedred
+
+CatA -->|hasRisk| RiskOfExplicitlyStoredData
+certain -->Refuse["`**Refuse** <br> no prospect of change`"]
+style Refuse shape:stadium, fill:red
+
+%% Gen AI - No
+Type -->|SequenceBased| CatB(["`**Category B**  e.g. Generative AI`"]):::roundedred 
+CatB---|hasRisk| RiskOfExtraction 
+CatB---|hasRisk| RiskOfMIAAIA
+RiskOfExtraction-->RefuseAtPresent["`**Refuse At Present** <br>Active research area`"]
+RiskOfMIAAIA -->RefuseAtPresent
+style RefuseAtPresent shape:stadium, fill:red
+
+%% Cat C Maybe 
+Type ---> |Independent per record| CatC(["`**Category C:** Independent predictions for each input`"]):::roundedorange
+CatC ---> GOTO4["Goto figure 4"]
+style GOTO4 fill:yellow
+
+```
+
+# Flowchart: 'Category C' models trained on sensistive data being released to outside world
+```mermaid
+---
+config:
+  theme: 'base'
+  themeVariables:
+    fontSize: 28px
+---
+
+
+flowchart LR
+
+classDef invisible fill:none,stroke:0px,stroke-width:0px,width:0px,height:0px ;
+classDef riskStyle fill:lightpink ;
+classDef mitigationStyle fill:lightgreen ;
+    
+classDef constant fill:lightblue,shape:stadium ;
+classDef sometext shape:text ;
+classDef roundedorange fill:orange, shape:stadium;
+classDef roundedred fill:red,shape: stadium;
 
 
 
@@ -188,25 +272,7 @@ style MitigationByAttackInvulnerability fill:lightgreen
 
 
 
-subgraph RiskOfExtraction["`**RiskOfExtraction**`"]
-  Extraction(Prompts can trigger regurgitation)
-  Extraction --> |hasLikelihood| unquantifiable["difficult to reliably quantify"]
-  style unquantifiable shape:circle, fill:pink   
-  %%Extraction --> |hasMitigation| Pseudonymised
-  %%Extraction --> |hasMitigation| ModelQueryServer[Model Access Controls]  
-  extractcomment@{ shape: text, label: "Highly active research field, no meaningful consensus on defence" } -.-unquantifiable
-end
-style RiskOfExtraction fill:lightpink
 
-subgraph RiskOfExplicitlyStoredData["`**RiskOfExplicitlyStoredData**`"]
-    ExplicitlyStoredData(Model explicitly stores data that can be accessed) 
-    ExplicitlyStoredData -->|hasLikelihood| certain["100%"]
-    style certain shape:circle, fill:#f11 
-    %%ExplicitlyStoredData -->|hasMitigation| KAnon
-    %%ExplicitlyStoredData -->|hasMitigation| DPE
-    %%ExplicitlyStoredData -->|hasMitigation| Pseudonymised
-end
-style RiskOfExplicitlyStoredData fill:lightpink
 
 subgraph RiskofMembershipInference["`**RiskofMembershipInference**`"]
     MembershipInference(Behaviour of model for a record supports inference it  was part of the training set)
@@ -258,28 +324,14 @@ end
 style RiskOfFullySpecifiedModel fill:lightpink
 
 %% Here's the main block
-SENSITIVE[Trained model with high impact of leakage] --> Type{Basis of prediction}
-%% instance based - no
-Type -->|Comparison to stored data| CatA(["`**CategoryA:** Instance-based e.g. Support Vector Machines`"]):::roundedred
-
-CatA -->|hasRisk| RiskOfExplicitlyStoredData
-certain -->Refuse
-style Refuse shape:stadium, fill:red
-
-%% Gen AI - No
-Type -->|SequenceBased| CatB(["`**Category B**  e.g. Generative AI`"]):::roundedred ---|hasRisk| RiskOfExtraction 
-unquantifiable-->Refuse
-
-
-%% Cat C Maybe 
-Type ------> |Independent per record| CatC(["`**Category C:** Independent predictions for each input`"]):::roundedorange
+CatC(["`**Category C:** Independent predictions for each input`"]):::roundedorange
 CatC ----->LabelType{Type of prediction}
 LabelType -->|semi-structured|Segmentation([C3: Segmentation, Regions of Interest]):::roundedorange
 Segmentation -->|hasRisk| MembershipInference
 
-LabelType -->|unordered|Classification([C2: Classification Models]):::roundedorange
+LabelType -->|labels from unordered set|Classification([C2: Classification Models]):::roundedorange
 
-LabelType -->|ordered|Regression([C1: Regression Models]):::roundedorange
+LabelType -->|labels from ordered set|Regression([C1: Regression Models]):::roundedorange
 
 
 Classification -->Common[Supervised Learner]:::roundedorange
@@ -294,8 +346,6 @@ Common -->|hasRisk| RiskOfClassDisclosure
 Common -->|hasRisk| RiskOfFullySpecifiedModel
 
 ```
-
-
 
 
 
