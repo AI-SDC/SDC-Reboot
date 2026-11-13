@@ -59,7 +59,7 @@ In the below *raw data* refers to data as provided by the TRE, *training data* r
 |Discrebitability of MIAs| Impact|Domingo Ferrer et al (ESORICS) identify a mitigation based only on the nature of the training data<br> regardless of attack.<br>  In some cases, even if it can be inferred that a record must have been present in the training set,<br> that cannot be mapped back to a unique individual.| tbc |(1) $n$: minimum 'arity' of mapping of values to quasi-identifers <br> (2) Organisational attitude?<br>(applies equally to other SDC risks) |data is tabular **and** <br>data is a sample of records available **and** <br>the mapping from 'confidential attribute values' to 'quasi identifer values' <br>is $n:1$ with $n >1$ for all quasi-identifer values| 
 
 Notes:
-- $ \dagger $ : Arguments about impact for Model Access Controls are that potential release would only be to selected audience, e.g. clinicians within trust boundary. However that could still violate organisational data protection policies 
+- $\dagger$ : Arguments about impact for Model Access Controls are that potential release would only be to selected audience, e.g. clinicians within trust boundary. However that could still violate organisational data protection policies 
 - $\dagger \dagger$ Privacy guarantee ($\epsilon$) depends on combination of (i) adding noise to groups (batches) of records and (ii) 'clipping' the influence of individual records. Improper settings can satisfy $\epsilon$ values but still leave models/embeddings vulnerable to attack.
 
 
@@ -106,7 +106,7 @@ Notes:
 
 
 Notes: 
-- $ \dagger $ : Arguments about impact for Model Access Controls are that potential release would only be to selected audience, e.g. clinicians within trust boundary. However that could still violate organisational data protection policies 
+- $\dagger$ : Arguments about impact for Model Access Controls are that potential release would only be to selected audience, e.g. clinicians within trust boundary. However that could still violate organisational data protection policies 
 - $\dagger \dagger$ : Membership and Attribute Inference Attacks for 'standard ML' (label prediction for each record is independant of other predictions) are reasonably well understood. The extension to sequence-based models e.g.  Generative AI is a highly active research topic with no current consensus on best practice.
 - $\dagger\dagger\dagger$ : the measurement of, and defences against the risk that some prompts may induce Generative AI models to 'regurgitate' training data is a highly active research topic with no current consensus on best practice.
 
