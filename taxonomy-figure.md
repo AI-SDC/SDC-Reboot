@@ -66,7 +66,7 @@ Notes:
 |Presence zeros in predicted probabilities| Class Disclosure | A classifier predicting zero probability <br> for a label for group of records <br>  |tbc|min. tolerance for prob(label)<br> to be considerdd non-zero|This is equivalent to a table where one or more cells are empty|
 |DoF count|Low Residual Degrees of Freedom| Counts and compares model parameter count <br> vs. training set size.|tbc| minimum residual  DoF | Same as  applied to 'traditional' regression models|
 |Generalisation Gap|Membership Inference|Difference between losses on training and test sets.<br> One measure of **over-fitting**.<br>| tbc |max threshold |Typically a **sufficient but not necessary** condition for MIA vulnerability.<br>i.e  reason to reject but not to accept an egress request.|
-|Direct model code check|Extraction of explicitly stored training data|Directly accessing model attributes in code <br>e.g. `print(my_support_vector_classifier.support_vectors_)` |tbc |- |-| 
+|Direct model code check|Extraction of explicitly stored training data|Directly accessing model attributes in code <br>e.g. `print(my_SVC.support_vectors_)` |tbc |- |-| 
 
 ---
 
