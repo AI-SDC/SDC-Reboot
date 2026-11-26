@@ -55,7 +55,6 @@ In the below *raw data* refers to data as provided by the TRE, *training data* r
 | $K$-anonymity |Impact| Preprocessing  introduces a  mapping from 'raw' data to training data <br> which is at least $K \rightarrow 1$ | tbc | $K$ |privacy guarantees are at *record-level* <br> so data cannot contain multiple records from same person|
 | PII removal | Impact| Preprocessing removes all direct **or indirect** personal identifiers.<br> Thus even though unique training records could be extracted <br> they could not reasonably be traced to individuals | - | -|Requires agreement with TRE on a dataset-specific basis|
 |Differentially Private training | Likelihood| Use of a DP optimiser during model training | tbc |  (1) $\epsilon$<br>(2) $\delta$ (for some implementations) |privacy guarantees are at *record-level* <br> so data cannot contain multiple records from same person <br><br> Setting of $\epsilon$ is non-trivial $\dagger \dagger$|
-|Failure of simulated inference attacks|Likelihood| Suite of simulated attacks not statistically better than random guessing <br> **and** same records are not consistently identified by most attacks|tbc|(1) selection of attacks,<br>(2) selection of metrics <br>(e.g. AUC, TPR@lowFPR),<br>(3) $\alpha$- probability threshold <br> for rejecting "null hypothesis" <br> that attack is doing no better than random guessing<br>(4)computational budget <br> (decides what attacks can be run) |'strength' of attacks depends on compute <br><br> typical relies on estimating upper bound of vulnerability<br> by exploiting 'worst-case' scenario of maximum knowledge of datasets|
 |Discrebitability of MIAs| Impact|Domingo Ferrer et al (ESORICS) identify a mitigation based only on the nature of the training data<br> regardless of attack.<br>  In some cases, even if it can be inferred that a record must have been present in the training set,<br> that cannot be mapped back to a unique individual.| tbc |(1) $n$: minimum 'arity' of mapping of values to quasi-identifers <br> (2) Organisational attitude?<br>(applies equally to other SDC risks) |data is tabular **and** <br>data is a sample of records available **and** <br>the mapping from 'confidential attribute values' to 'quasi identifer values' <br>is $n:1$ with $n >1$ for all quasi-identifer values| 
 
 Notes:
@@ -66,16 +65,24 @@ Notes:
 ## Checks
 | Name | What risk(s) does the check measure | Description |uri | organisationalMeasures |Constraints/Notes |
 | ---- |---|---|---|---|---|
-|Equivalence classes <br> in model outputs<br> for training data | Small group reporting | tbc| - |tolerance to two outputs to be considered identical |can be done explicitly for tree-based models <br> more generally by grouping output probabilities |
-|Presence zeros in predicted probabilities| Class Disclosure | A classifier predicting zero probability <br> for a label for group of records <br>  |tbc|min. tolerance for prob(label)<br> to be considerdd non-zero|This is equivalent to a table where one or more cells are empty|
-|DoF count|Low Residual Degrees of Freedom| Counts and compares model parameter count <br> vs. training set size.|tbc| minimum residual  DoF | Same as  applied to 'traditional' regression models|
+|Size of Equivalence classes <br> in model outputs<br> for training data | Small group reporting | tbc| - |tolerance to two outputs to be considered identical |can be done explicitly for tree-based models <br> more generally by grouping output probabilities |
+|Presence zeros in predicted probabilities| Class Disclosure | A classifier predicting zero probability <br> for a label for group of records <br>  |tbc|min. tolerance for prob(label)<br> to be considered non-zero|This is equivalent to a table where one or more cells are empty|
+|DoF count $\geq$ threshold <br> specified by risk appetite|Low Residual Degrees of Freedom| Counts and compares model parameter count <br> vs. training set size.|tbc| minimum residual  DoF | Same as  applied to 'traditional' regression models|
 |Generalisation Gap|Membership Inference|Difference between losses on training and test sets.<br> One measure of **over-fitting**.<br>| tbc |max threshold |Typically a **sufficient but not necessary** condition for MIA vulnerability.<br>i.e  reason to reject but not to accept an egress request.|
 |Direct model code check|Extraction of explicitly stored training data|Directly accessing model attributes in code <br>e.g. `print(my_SVC.support_vectors_)` |tbc |- |-| 
-|Simulated Attack Results| Extraction of implicitly stored <br>MIA/AIA | Results from running simulated attacks. |tbc |choice of metrics<br> |tbc|
+|Vulnerability to  simulated inference attacks|Membership/Attribute| Suite of simulated attacks not statistically better than random guessing <br> **and** same records are not consistently identified by most attacks|tbc|(1) selection of attacks,<br>(2) selection of metrics <br>(e.g. AUC, TPR@lowFPR),<br>(3) $\alpha$- probability threshold <br> for rejecting "null hypothesis" <br> that attack is doing no better than random guessing<br>(4)computational budget <br> (decides what attacks can be run) |'strength' of attacks depends on compute <br><br> typical relies on estimating upper bound of vulnerability<br> by exploiting 'worst-case' scenario of maximum knowledge of datasets|
 ---
 
 **Open Question: better to frame "failure of simulated attacks" as a check? or a mitigation with an associated check?**
 
+
+
+## Evidence
+| Name | What checks or mitigations does the evidence support/ measure | Description |uri | organisationalMeasures |Constraints/Notes |
+| ---- |---|---|---|---|---|
+|Simulated Attack Results| Vulnerability <br> Memberrship/Attribute Inference | Results from running simulated attacks. |tbc |choice of metrics<br> |tbc|
+|DoF count|Low Residual Degrees of Freedom| Counts of modifiable parameters in trained model|tbc| minimum residual  DoF | tbc|
+|Equivalence classes|partition of training records according to model (whitebox)<br> or model outputs (blackox)|Records the way that the trained model<br>  has learned to split the<br> training data into subgroups |tbc|-|-|
 
 
 
